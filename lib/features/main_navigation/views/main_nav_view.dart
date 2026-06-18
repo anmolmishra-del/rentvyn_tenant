@@ -54,6 +54,15 @@ class _MainNavViewState extends State<MainNavView> {
   }
 
   Future<void> _onLogout() async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(color: AppColors.primary),
+      ),
+    );
+
     // Call API to logout, passing the FCM token so the backend can remove it
     try {
       final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -65,6 +74,11 @@ class _MainNavViewState extends State<MainNavView> {
 
     // Clear local storage
     await AuthStorage.logout();
+
+    // Pop the loading dialog
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
 
     // Reset LoginCubit so user sees the phone entry screen (not OTP screen)
     if (mounted) {
