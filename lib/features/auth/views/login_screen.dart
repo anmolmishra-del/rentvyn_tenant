@@ -89,6 +89,14 @@ class _LoginScreenState extends State<LoginScreen>
             if (state.isVerified) {
               widget.onLoginSuccess();
             }
+
+            // When cubit is reset (logout), clear the phone field and OTP fields
+            if (!state.otpSent && !state.isVerified && !state.isLoading) {
+              phone.clear();
+              for (final c in otpControllers) {
+                c.clear();
+              }
+            }
           },
 
           child: BlocBuilder<LoginCubit, LoginState>(

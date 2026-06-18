@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentvyn_tenant/features/auth/views/login_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import '../../dashboard/views/dashboard_view.dart';
 import '../../explore/views/explore_pgs_view.dart';
 import '../../../core/constants/app_colors.dart';
+import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
+import 'package:rentvyn_tenant/features/auth/cubit/auth_service.dart';
 
 class MainNavView extends StatefulWidget {
   const MainNavView({super.key});
@@ -14,12 +19,24 @@ class MainNavView extends StatefulWidget {
 class _MainNavViewState extends State<MainNavView> {
   int _selectedTab = 0; // 0: My PGs (Light Blue), 1: Explore (Light Violet)
   bool _isLoggedIn = false;
+  bool _isLoading = true;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedTab);
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final isLoggedIn = await AuthStorage.isLoggedIn();
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = isLoggedIn;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -36,12 +53,28 @@ class _MainNavViewState extends State<MainNavView> {
     _pageController.jumpToPage(0);
   }
 
-  void _onLogout() {
-    setState(() {
-      _isLoggedIn = false;
-      _selectedTab = 0;
-    });
-    _pageController.jumpToPage(0);
+  Future<void> _onLogout() async {
+    // Call API to logout, passing the FCM token so the backend can remove it
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      await AuthService.logout(fcmToken: fcmToken);
+    } catch (e) {
+      print("Error fetching FCM token on logout: $e");
+      await AuthService.logout(); // Fallback without token
+    }
+
+    // Clear local storage
+    await AuthStorage.logout();
+
+    // Reset LoginCubit so user sees the phone entry screen (not OTP screen)
+    if (mounted) {
+      context.read<LoginCubit>().reset();
+      setState(() {
+        _isLoggedIn = false;
+        _selectedTab = 0;
+      });
+      _pageController.jumpToPage(0);
+    }
   }
 
   void _navigateToTab(int index) {
@@ -57,6 +90,15 @@ class _MainNavViewState extends State<MainNavView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
+      );
+    }
+
     final bool showNavBar = !_isLoggedIn;
 
     // Curated nav pill colors for better contrast and consistency

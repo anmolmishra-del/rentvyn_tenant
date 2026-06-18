@@ -101,4 +101,23 @@ static Future<Map<String, dynamic>?> verifyOtp(
 
     return null;
   }
-}}
+}
+
+  static Future<bool> logout({String? fcmToken}) async {
+    try {
+      final res = await ApiClient.post(
+        ApiUrls.logout,
+        body: fcmToken != null ? {"token": fcmToken} : null,
+        requireAuth: true,
+      );
+
+      if (res.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print("Logout Error: $e");
+      return false;
+    }
+  }
+}

@@ -10,5 +10,5 @@ class ApiUrls {
   static const verifyOtp = "$authBase/auth/tenant/verify-otp";
 
   static const String saveFcmToken = "$authBase/token/save_token";
-  
+  static const logout = "$authBase/auth/tenant/logout";
 }

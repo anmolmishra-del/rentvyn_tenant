@@ -13,6 +13,12 @@ class LoginCubit extends Cubit<LoginState> {
   String? phone;
   LoginCubit() : super(LoginState());
 
+  /// Resets cubit back to initial state (phone entry screen).
+  void reset() {
+    _timer?.cancel();
+    emit(LoginState());
+  }
+
   void sendOtp(String phone) async {
     try {
       this.phone = phone;
