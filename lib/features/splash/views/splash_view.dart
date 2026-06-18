@@ -117,37 +117,39 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
                 alignment: Alignment.center,
                 children: [
                   // Logo with initial scale-in and final zoom-out
-                  AnimatedBuilder(
-                    animation: _animationController,
-                    builder: (BuildContext context, Widget? child) {
-                      return Transform.scale(
-                        scale: _animation.value,
-                        child: child,
-                      );
-                    },
-                    child: AnimatedScale(
-                      duration: const Duration(milliseconds: 500),
-                      scale: _scaleLogo ? 12 : 0.9,
-                      child: Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primary,
-                              AppColors.secondary,
-                            ],
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.home_work_rounded,
-                          size: 72,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-
+                 AnimatedBuilder(
+  animation: _animationController,
+  builder: (context, child) {
+    return Transform.scale(
+      scale: _animation.value,
+      child: child,
+    );
+  },
+  child: AnimatedScale(
+    duration: const Duration(milliseconds: 500),
+    scale: _scaleLogo ? 8 : 1,
+    child: Container(
+      width: 120,
+      height: 120,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Image.asset(
+        'assets/logo.png',
+        fit: BoxFit.contain,
+      ),
+    ),
+  ),
+),
                   // Brand Name: Rentvyn
                   Padding(
                     padding: const EdgeInsets.only(top: 180),
