@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
+import 'package:rentvyn_tenant/features/tickets/views/ticket_raise.dart';
+import 'package:rentvyn_tenant/features/tickets/views/tickets_page.dart';
 import 'home_tab.dart';
 import 'accounts_tab.dart';
 import 'tickets_tab.dart';

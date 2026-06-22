@@ -49,6 +49,7 @@ class Owner {
   final List<Subscription> subscriptions;
   final Plan? plan;
   final List<Manager>? manager;
+  final int? ownerId;
 
   Owner({
     this.accessToken,
@@ -85,6 +86,7 @@ class Owner {
     this.subscriptions = const [],
     this.plan,
     this.manager,
+    this.ownerId,
   });
 
   /// Handles both the full verify-otp response (has access_token + tenant)
@@ -117,9 +119,7 @@ class Owner {
       rent: (t['rent'] as num?)?.toDouble() ?? 0,
       securityDeposit: (t['security_deposit'] as num?)?.toDouble() ?? 0,
       joinDate: t['join_date'] ?? '',
-
-      // Address
-      address: t['address'] ?? '',
+ownerId: (json['owner_id'] as num?)?.toInt(),      address: t['address'] ?? '',
       city: t['city'] ?? '',
       state: t['state'] ?? '',
       country: t['country'] ?? '',
@@ -157,6 +157,7 @@ class Owner {
       'access_token': accessToken,
       'token_type': tokenType,
       'expires_in': expiresIn,
+      'owner_id': ownerId, 
       'tenant': {
         'id': id,
         'name': name,
