@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
+import 'package:intl/intl.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -29,6 +30,16 @@ class _HomeTabState extends State<HomeTab> {
       });
     }
   }
+  String formatDate(String? dateString) {
+  if (dateString == null || dateString.isEmpty) return '-';
+
+  try {
+    return DateFormat('dd')
+        .format(DateTime.parse(dateString));
+  } catch (e) {
+    return '-';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +224,7 @@ class _HomeTabState extends State<HomeTab> {
                                       Colors.white.withValues(alpha: 0.7)),
                               const SizedBox(width: 6),
                               Text(
-                                'Due on 5th of every month',
+                                'Due on ${formatDate(joinedDate)} of every month',
                                 style: TextStyle(
                                     color:
                                         Colors.white.withValues(alpha: 0.8),

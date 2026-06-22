@@ -103,7 +103,13 @@ class TicketsService {
 
   static Future<bool> updateComplaint({
     required int complaintId,
+    required int hostelId,
+    required int tenantId,
+    required int ownerId,
+    required int complaintTypeId,
     required String description,
+    required String status,
+    required String priority,
   }) async {
     try {
       final res = await ApiClient.put(
@@ -112,7 +118,13 @@ class TicketsService {
         ),
         requireAuth: true,
         body: {
+          "hostel_id": hostelId,
+          "tenant_id": tenantId,
+          "owner_id": ownerId,
+          "complaint_type_id": complaintTypeId,
           "description": description,
+          "status": status,
+          "priority": priority,
         },
       );
 

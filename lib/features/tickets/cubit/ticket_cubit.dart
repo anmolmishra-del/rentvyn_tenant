@@ -2,81 +2,80 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_service.dart';
 import 'package:rentvyn_tenant/features/tickets/state/ticket_state.dart';
+import 'package:rentvyn_tenant/features/tickets/models/ticket_model.dart';
 
 class TicketsCubit extends Cubit<TicketsState> {
   TicketsCubit() : super(TicketsState());
 
   Future<void> createComplaint({
-  required int complaintTypeId,
-  required String description,
-  required String priority,
-}) async {
-  try {
-    emit(
-      state.copyWith(
-        loading: true,
-        error: null,
-      ),
-    );
+    required int complaintTypeId,
+    required String description,
+    required String priority,
+  }) async {
+    try {
+      emit(
+        state.copyWith(
+          loading: true,
+          createSuccess: false,
+          error: null,
+        ),
+      );
 
-    final tenant =
-        await AuthStorage.getOwner();
+      final tenant = await AuthStorage.getOwner();
 
-    print(
-      "TENANT DATA => ${tenant?.toJson()}",
-    );
+      print(
+        "TENANT DATA => ${tenant?.toJson()}",
+      );
 
-    if (tenant == null) {
+      if (tenant == null) {
+        emit(
+          state.copyWith(
+            loading: false,
+            error: "Tenant not found",
+          ),
+        );
+        return;
+      }
+
+      final success = await TicketsService.createComplaint(
+        hostelId: tenant.hostelId,
+        tenantId: tenant.id,
+        ownerId: 6,
+        //  ownerId: tenant.ownerId ?? 0,    
+        complaintTypeId: complaintTypeId,
+        description: description,
+        priority: priority,
+      );
+      print("HOSTEL ID => ${tenant.hostelId}");
+      print("HOSTEL OWNER ID => ${tenant.ownerId}");
+      print(
+        "CREATE SUCCESS => $success",
+      );
+
+      if (success) {
+        await loadTickets();
+      }
+
       emit(
         state.copyWith(
           loading: false,
-          error: "Tenant not found",
+          createSuccess: success,
         ),
       );
-      return;
+    } catch (e) {
+      print(
+        "CREATE COMPLAINT ERROR => $e",
+      );
+
+      emit(
+        state.copyWith(
+          loading: false,
+          createSuccess: false,
+          error: e.toString(),
+        ),
+      );
     }
-
-    final success =
-        await TicketsService.createComplaint(
-      hostelId:
-          tenant.hostelId ?? 0,
-      tenantId: tenant.id,
-      ownerId:
-          6,
-//  ownerId: tenant.ownerId ?? 0,    
-   complaintTypeId:
-          complaintTypeId,
-      description: description,
-      priority: priority,
-    );
-print("HOSTEL ID => ${tenant.hostelId}");
-print("OWNER ID => ${tenant.ownerId}");
-    print(
-      "CREATE SUCCESS => $success",
-    );
-
-    if (success) {
-      await loadTickets();
-    }
-
-    emit(
-      state.copyWith(
-        loading: false,
-      ),
-    );
-  } catch (e) {
-    print(
-      "CREATE COMPLAINT ERROR => $e",
-    );
-
-    emit(
-      state.copyWith(
-        loading: false,
-        error: e.toString(),
-      ),
-    );
   }
-}
 Future<void> loadComplaintTypes() async {
   try {
     final types =
@@ -130,45 +129,50 @@ Future<bool> deleteComplaint(
     return false;
   }
 }
-Future<bool> updateComplaint({
-  required int complaintId,
-  required String description,
-}) async {
-  try {
-    emit(
-      state.copyWith(
-        loading: true,
-      ),
-    );
+  Future<bool> updateComplaint({
+    required Complaint complaint,
+    required String description,
+  }) async {
+    try {
+      emit(
+        state.copyWith(
+          loading: true,
+        ),
+      );
 
-    final success =
-        await TicketsService.updateComplaint(
-      complaintId: complaintId,
-      description: description,
-    );
+      final success = await TicketsService.updateComplaint(
+        complaintId: complaint.id,
+        hostelId: complaint.hostelId,
+        tenantId: complaint.tenantId,
+        ownerId: complaint.ownerId,
+        complaintTypeId: complaint.complaintTypeId,
+        description: description,
+        status: complaint.status,
+        priority: complaint.priority,
+      );
 
-    if (success) {
-      await loadTickets();
+      if (success) {
+        await loadTickets();
+      }
+
+      emit(
+        state.copyWith(
+          loading: false,
+        ),
+      );
+
+      return success;
+    } catch (e) {
+      emit(
+        state.copyWith(
+          loading: false,
+          error: e.toString(),
+        ),
+      );
+
+      return false;
     }
-
-    emit(
-      state.copyWith(
-        loading: false,
-      ),
-    );
-
-    return success;
-  } catch (e) {
-    emit(
-      state.copyWith(
-        loading: false,
-        error: e.toString(),
-      ),
-    );
-
-    return false;
   }
-}
   Future<void> loadTickets() async {
     try {
       emit(state.copyWith(loading: true));
@@ -219,6 +223,14 @@ Future<bool> updateComplaint({
     emit(
       state.copyWith(
         priority: value,
+      ),
+    );
+  }
+
+  void resetCreateSuccess() {
+    emit(
+      state.copyWith(
+        createSuccess: false,
       ),
     );
   }

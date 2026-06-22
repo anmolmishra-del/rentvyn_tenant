@@ -43,7 +43,7 @@ class AuthStorage {
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString("owner");
 
-    print("SAVED OWNER => $data");
+    print("SAVED TENANT => $data");
 
     if (data != null) {
       return Owner.fromJson(jsonDecode(data));

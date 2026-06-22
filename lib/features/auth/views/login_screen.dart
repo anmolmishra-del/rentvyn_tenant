@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
 
                               child: Image.asset(
-                                'assets/logo.png',
+                                'assets/mainlogo.png',
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -373,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.secondary,
+                                  backgroundColor: AppColors.primary,
 
                                   elevation: 0,
 

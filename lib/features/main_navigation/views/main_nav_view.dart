@@ -116,13 +116,9 @@ class _MainNavViewState extends State<MainNavView> {
     final bool showNavBar = !_isLoggedIn;
 
     // Curated nav pill colors for better contrast and consistency
-    final Color portalSelectedBg = AppColors.primary.withOpacity(0.18);
     const Color portalSelectedFg = AppColors.primary;
-    final Color portalUnselectedBg = Colors.white;
 
-    final Color exploreSelectedBg = AppColors.secondary.withOpacity(0.18);
-    const Color exploreSelectedFg = AppColors.secondary;
-    final Color exploreUnselectedBg = Colors.white;
+    const Color exploreSelectedFg = AppColors.primary;
 
     return Scaffold(
       extendBody: showNavBar,
@@ -168,7 +164,7 @@ class _MainNavViewState extends State<MainNavView> {
                                   height: 70,
                                   margin: const EdgeInsets.only(right: 12),
                                   decoration: BoxDecoration(
-                                    color: AppColors.secondary,
+                                    color: AppColors.primary,
                                     borderRadius: BorderRadius.circular(35),
                                     border: Border.all(color: portalSelectedFg.withOpacity(0.18), width: 1.5),
                                     // boxShadow: [
@@ -204,7 +200,7 @@ class _MainNavViewState extends State<MainNavView> {
                                   width: 70,
                                   height: 70,
                                   decoration: BoxDecoration(
-                                    color: AppColors.secondary,
+                                    color: AppColors.primary,
                                     shape: BoxShape.circle,
                                     border: Border.all(color: portalSelectedFg.withOpacity(0.12), width: 1),
                                     // boxShadow: [
@@ -227,7 +223,7 @@ class _MainNavViewState extends State<MainNavView> {
                                   height: 70,
                                   margin: const EdgeInsets.only(left: 12),
                                   decoration: BoxDecoration(
-                                    color: AppColors.secondary,
+                                    color: AppColors.primary,
                                     borderRadius: BorderRadius.circular(35),
                                     border: Border.all(color: exploreSelectedFg.withOpacity(0.18), width: 1.5),
                                     // boxShadow: [
@@ -263,7 +259,7 @@ class _MainNavViewState extends State<MainNavView> {
                                   width: 70,
                                   height: 70,
                                   decoration: BoxDecoration(
-                                    color: AppColors.secondary,
+                                    color: AppColors.primary,
                                     shape: BoxShape.circle,
                                     border: Border.all(color: exploreSelectedFg.withOpacity(0.12), width: 1),
                                     // boxShadow: [
