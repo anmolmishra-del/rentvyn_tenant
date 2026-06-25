@@ -1,0 +1,123 @@
+{
+  "@@locale": "te",
+
+  "welcomeBack": "తిరిగి స్వాగతం,",
+  "monthlyRentDue": "నెలవారీ అద్దె బకాయి",
+  "payNow": "ఇప్పుడే చెల్లించండి",
+  "securityDeposit": "సెక్యూరిటీ డిపాజిట్",
+  "roomNumber": "గది నం.",
+  "introducingAutoPay": "ఆటో-పే పరిచయం! 🚀",
+  "autoPayDescription": "ప్రతి నెల అద్దె ఆటోమేటిక్ చెల్లింపుల కోసం UPI/Card లింక్ చేయండి.",
+  "profileStayOverview": "ప్రొఫైల్ & నివాస వివరాలు",
+  "identityVerification": "గుర్తింపు ధృవీకరణ",
+  "identityVerifiedMessage": "మీ గుర్తింపు విజయవంతంగా ధృవీకరించబడింది.",
+  "identityPendingMessage": "మీ గుర్తింపు ధృవీకరణ పెండింగ్‌లో ఉంది.",
+  "stayStatus": "నివాస స్థితి",
+  "activeStayMessage": "యాక్టివ్ ఒప్పందం. నోటీస్ పీరియడ్ లేదు.",
+  "inactiveStayMessage": "మీ నివాసం ప్రస్తుతం క్రియాశీలంగా లేదు.",
+  "verified": "ధృవీకరించబడింది",
+  "pending": "పెండింగ్",
+  "activeStay": "యాక్టివ్ నివాసం",
+  "inactive": "నిష్క్రియ",
+  "noNewNotifications": "కొత్త నోటిఫికేషన్లు లేవు",
+  "rentvynPg": "Rentvyn PG",
+  "room": "గది",
+  "city": "నగరం",
+  "tenant": "అద్దెదారు",
+  "dueOn": "చెల్లించవలసిన తేదీ",
+  "everyMonth": "ప్రతి నెల",
+
+  "myProfile": "నా ప్రొఫైల్",
+  "logOut": "లాగ్ అవుట్",
+  "active": "యాక్టివ్",
+  "unverified": "ధృవీకరించబడలేదు",
+
+  "personalDetails": "వ్యక్తిగత వివరాలు",
+  "phone": "ఫోన్",
+  "altPhone": "ప్రత్యామ్నాయ ఫోన్",
+  "gender": "లింగం",
+  "address": "చిరునామా",
+  "cityState": "నగరం / రాష్ట్రం",
+  "zipcode": "పిన్ కోడ్",
+
+  "roomRentDetails": "గది & అద్దె వివరాలు",
+  "roomNo": "గది నం.",
+  "monthlyRent": "నెలవారీ అద్దె",
+  "joinDate": "చేరిన తేదీ",
+
+  "emergencyContact": "అత్యవసర సంప్రదింపు",
+  "name": "పేరు",
+  "relationship": "సంబంధం",
+
+  "rentalAgreement": "అద్దె ఒప్పందం",
+  "rentalAgreementSubtitle": "ID, నెలవారీ అద్దె, PDF డౌన్‌లోడ్",
+
+  "policeVerification": "పోలీస్ ధృవీకరణ",
+  "policeVerificationSubtitle": "e-KYC స్థితి & వివరాలు",
+
+  "roommateDetails": "రూమ్‌మేట్ వివరాలు",
+  "roommateDetailsSubtitle": "మీ గదిలో ఉన్న వారు",
+
+  "language": "భాష",
+  "languageSubtitle": "ఇంగ్లీష్ / తెలుగు / హిందీ",
+    "raiseComplaint": "ఫిర్యాదు నమోదు చేయండి",
+  "selectCategory": "వర్గాన్ని ఎంచుకోండి",
+  "complaintCategory": "ఫిర్యాదు వర్గం",
+  "selectPriority": "ప్రాధాన్యతను ఎంచుకోండి",
+  "description": "వివరణ",
+  "submitComplaint": "ఫిర్యాదు సమర్పించండి",
+  "complaintSubmittedSuccessfully": "ఫిర్యాదు విజయవంతంగా సమర్పించబడింది",
+  "pleaseDescribeIssue": "దయచేసి మీ సమస్యను వివరించండి",
+
+  "complaintFormInfo": "మీ సమస్యను సమర్పించడానికి ఈ ఫారమ్‌ను పూరించండి. మా నిర్వహణ బృందం దాన్ని పరిశీలించి స్థితిని నవీకరిస్తుంది.",
+
+  "descriptionHint": "సమస్యను సంక్షిప్తంగా వివరించండి (ఉదా: ఉదయం నుండి WiFi పనిచేయడం లేదు, వాష్‌రూమ్‌లో లీకేజ్ ఉంది...)",
+
+  "low": "తక్కువ",
+  "normal": "సాధారణ",
+  "supportTickets": "సపోర్ట్ టికెట్లు",
+"raiseTicket": "టికెట్ నమోదు చేయండి",
+
+"all": "అన్నీ",
+"open": "ఓపెన్",
+"inProgress": "పనిలో ఉంది",
+"resolved": "పరిష్కరించబడింది",
+
+"total": "మొత్తం",
+
+"noTicketsFound": "టికెట్లు లేవు",
+"noTicketsMessage": "మీరు ఇంకా ఎలాంటి టికెట్ నమోదు చేయలేదు. సమస్యను నివేదించడానికి కింది బటన్‌ను నొక్కండి.",
+"noTicketsFilterMessage": "ఎంచుకున్న స్థితికి సరిపడే టికెట్లు లేవు.",
+"viewAllTickets": "అన్ని టికెట్లు చూడండి",
+
+"complaint": "ఫిర్యాదు",
+"createdOn": "సృష్టించిన తేదీ",
+
+"ticketActions": "టికెట్ చర్యలు",
+"editComplaint": "ఫిర్యాదును సవరించండి",
+"editComplaintSubtitle": "మీ సమస్య వివరణను మార్చండి",
+
+"deleteComplaint": "ఫిర్యాదును తొలగించండి",
+"deleteComplaintSubtitle": "ఈ టికెట్‌ను శాశ్వతంగా తొలగించండి",
+
+"ticketId": "టికెట్ ID",
+
+"priority": "ప్రాధాన్యత",
+
+"enterUpdatedDescription": "సవరించిన వివరణను నమోదు చేయండి...",
+
+"cancel": "రద్దు",
+"saveChanges": "మార్పులను సేవ్ చేయండి",
+
+"complaintUpdatedSuccessfully": "ఫిర్యాదు విజయవంతంగా నవీకరించబడింది",
+"failedToUpdateComplaint": "ఫిర్యాదును నవీకరించలేకపోయాం",
+
+"deleteComplaintTitle": "ఫిర్యాదును తొలగించాలా?",
+"deleteComplaintMessage": "ఈ ఫిర్యాదును తొలగించాలనుకుంటున్నారా? ఈ చర్యను తిరిగి మార్చలేరు.",
+
+"delete": "తొలగించు",
+
+"complaintDeletedSuccessfully": "ఫిర్యాదు విజయవంతంగా తొలగించబడింది",
+"failedToDeleteComplaint": "ఫిర్యాదును తొలగించలేకపోయాం",
+  "high": "అత్యవసరం"
+}

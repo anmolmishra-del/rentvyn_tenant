@@ -17,6 +17,7 @@ class ApiClient {
     const sep = '───────────────────────────────────────────────────────';
     final buf = StringBuffer();
     buf.writeln('\n╔$sep');
+
     buf.writeln('║ 🌐 $method  $url');
     buf.writeln('╠$sep');
 
@@ -126,6 +127,7 @@ class ApiClient {
     _log('PUT', url, headers: headers, body: body);
     final response = await http.put(
       Uri.parse(url),
+      
       headers: headers,
       body: jsonEncode(body),
     );

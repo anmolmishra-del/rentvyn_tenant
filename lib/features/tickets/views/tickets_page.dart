@@ -4,6 +4,7 @@ import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
 import 'package:rentvyn_tenant/features/tickets/state/ticket_state.dart';
 import 'package:rentvyn_tenant/features/tickets/models/ticket_model.dart';
+import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 class RaiseComplaintPage extends StatefulWidget {
   const RaiseComplaintPage({super.key});
@@ -68,6 +69,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
   }
 
   void _showCategorySelectionSheet(BuildContext context, TicketsState state) {
+    final language = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -94,8 +96,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    "Select Category",
+                  child:Text(language.selectCategory,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -167,6 +168,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
 
   @override
   Widget build(BuildContext context) {
+      final language = AppLocalizations.of(context)!;
     return BlocListener<TicketsCubit, TicketsState>(
       listener: (context, state) {
         if (state.error != null && state.error!.isNotEmpty) {
@@ -187,8 +189,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
               backgroundColor: const Color(0xFF10B981),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              content: const Text("Complaint Submitted Successfully"),
-            ),
+content: Text(language.complaintSubmittedSuccessfully)            ),
           );
           context.read<TicketsCubit>().resetCreateSuccess();
           Navigator.pop(context, true);
@@ -197,8 +198,9 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
       child: Scaffold(
         backgroundColor: const Color(0xFFFAF9F6),
         appBar: AppBar(
-          title: const Text(
-            "Raise Complaint",
+          title:  Text(
+            // "Raise Complaint",
+            language.raiseComplaint,
             style: TextStyle(
               fontWeight: FontWeight.w800,
               fontSize: 20,
@@ -246,7 +248,8 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            "Fill out this form to submit your issue. Our management team will check it and update the status.",
+                            language.complaintFormInfo,
+                            // "Fill out this form to submit your issue. Our management team will check it and update the status.",
                             style: TextStyle(
                               color: AppColors.primary.withOpacity(0.85),
                               fontSize: 12,
@@ -261,8 +264,9 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                   const SizedBox(height: 24),
 
                   // Section: Complaint Type Picker
-                  const Text(
-                    "Complaint Category",
+                   Text(
+                    language.complaintCategory,
+                    // "Complaint Category",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
@@ -357,8 +361,9 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                   const SizedBox(height: 24),
 
                   // Section: Priority Selector
-                  const Text(
-                    "Select Priority",
+                   Text(
+                    language.selectPriority,
+                    // "Select Priority",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
@@ -369,19 +374,40 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
 
                   Row(
                     children: [
-                      _buildPriorityChip("low", "Low", const Color(0xFF10B981), state.priority),
-                      const SizedBox(width: 10),
-                      _buildPriorityChip("normal", "Normal", const Color(0xFF3B82F6), state.priority),
-                      const SizedBox(width: 10),
-                      _buildPriorityChip("high", "High", const Color(0xFFEF4444), state.priority),
+                      _buildPriorityChip(
+  "low",
+  language.low,
+  const Color(0xFF10B981),
+  state.priority,
+),
+
+_buildPriorityChip(
+  "normal",
+  language.normal,
+  const Color(0xFF3B82F6),
+  state.priority,
+),
+
+_buildPriorityChip(
+  "high",
+  language.high,
+  const Color(0xFFEF4444),
+  state.priority,
+),
+                      // _buildPriorityChip("low", "Low", const Color(0xFF10B981), state.priority),
+                      // const SizedBox(width: 10),
+                      // _buildPriorityChip("normal", "Normal", const Color(0xFF3B82F6), state.priority),
+                      // const SizedBox(width: 10),
+                      // _buildPriorityChip("high", "High", const Color(0xFFEF4444), state.priority),
                     ],
                   ),
 
                   const SizedBox(height: 24),
 
                   // Section: Description Form Field
-                  const Text(
-                    "Description",
+                  Text(
+                    // "Description",
+                    language.description,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
@@ -396,7 +422,8 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                     maxLength: 300,
                     style: const TextStyle(fontSize: 14, color: Color(0xFF1E293B)),
                     decoration: InputDecoration(
-                      hintText: "Briefly explain the issue (e.g. WiFi not working since morning, leaking faucet in washroom...)",
+                      hintText: language.descriptionHint,
+                      // hintText: "Briefly explain the issue (e.g. WiFi not working since morning, leaking faucet in washroom...)",
                       hintStyle: TextStyle(color: Colors.grey[400], fontSize: 13),
                       fillColor: Colors.white,
                       filled: true,
@@ -440,8 +467,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                               if (text.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: const Text("Please describe your issue"),
-                                    backgroundColor: Colors.red,
+content: Text(language.pleaseDescribeIssue),                                    backgroundColor: Colors.red,
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                   ),
@@ -464,8 +490,8 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                                 strokeWidth: 2.5,
                               ),
                             )
-                          : const Text(
-                              "Submit Complaint",
+                          :  Text(
+                              language.submitComplaint,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

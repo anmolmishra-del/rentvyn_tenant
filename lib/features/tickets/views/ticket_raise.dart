@@ -5,6 +5,8 @@ import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
 import 'package:rentvyn_tenant/features/tickets/state/ticket_state.dart';
 import 'package:rentvyn_tenant/features/tickets/models/ticket_model.dart';
 import 'package:rentvyn_tenant/features/tickets/views/tickets_page.dart';
+import 'package:rentvyn_tenant/l10n/app_localizations.dart';
+
 
 class TicketsTab extends StatefulWidget {
   const TicketsTab({super.key});
@@ -146,13 +148,15 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final language = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFAF9F6),
       appBar: AppBar(
-        title: const Text(
-          "Support Tickets",
+        title:  Text(
+          language.supportTickets,
+          // "Support Tickets",
           style: TextStyle(
             fontWeight: FontWeight.w800,
             fontSize: 22,
@@ -193,13 +197,13 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   children: [
-                    _buildStatCard("Total", allTickets.length.toString(), const Color(0xFF6C4AB6)),
+                    _buildStatCard(language.total, allTickets.length.toString(), const Color(0xFF6C4AB6)),
                     const SizedBox(width: 10),
-                    _buildStatCard("Open", openCount.toString(), AppColors.primary),
+                    _buildStatCard(language.open, openCount.toString(), AppColors.primary),
                     const SizedBox(width: 10),
-                    _buildStatCard("In Progress", progressCount.toString(), const Color(0xFFF59E0B)),
+                    _buildStatCard(language.inProgress, progressCount.toString(), const Color(0xFFF59E0B)),
                     const SizedBox(width: 10),
-                    _buildStatCard("Resolved", resolvedCount.toString(), const Color(0xFF10B981)),
+                    _buildStatCard(language.resolved, resolvedCount.toString(), const Color(0xFF10B981)),
                   ],
                 ),
               ),
@@ -250,8 +254,9 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
         elevation: 4,
         highlightElevation: 8,
         icon: const Icon(Icons.add_rounded, color: Colors.white, size: 22),
-        label: const Text(
-          "Raise Ticket",
+        label:  Text(
+          // "Raise Ticket",
+          language.raiseTicket,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -279,6 +284,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   Widget _buildStatCard(String label, String value, Color color) {
+        final language = AppLocalizations.of(context)!;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
@@ -314,6 +321,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   Widget _buildEmptyState() {
+        final language = AppLocalizations.of(context)!;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -339,7 +348,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  "No Tickets Found",
+                  language.noTicketsFound,
+                  // "No Tickets Found",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
@@ -348,9 +358,12 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _selectedStatusFilter == 'All'
-                      ? "You haven't raised any support tickets yet. Tap the button below to report an issue."
-                      : "No tickets match the selected status filter '$_selectedStatusFilter'.",
+                  _selectedStatusFilter == language.all
+    ? language.noTicketsMessage
+    : language.noTicketsFilterMessage,
+                  // _selectedStatusFilter == 'All'
+                  //     ? "You haven't raised any support tickets yet. Tap the button below to report an issue."
+                  //     : "No tickets match the selected status filter '$_selectedStatusFilter'.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
@@ -359,13 +372,13 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                   ),
                 ),
                 const SizedBox(height: 24),
-                if (_selectedStatusFilter != 'All')
+                if (_selectedStatusFilter != language.all)
                   OutlinedButton.icon(
                     onPressed: () {
                       _tabController.animateTo(0);
                     },
                     icon: const Icon(Icons.clear_all_rounded),
-                    label: const Text("View All Tickets"),
+                    label: Text(language.viewAllTickets),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.primary,
                       side: const BorderSide(color: AppColors.primary, width: 1.5),
@@ -384,9 +397,14 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   Widget _buildTicketCard(Complaint complaint, ThemeData theme) {
+        final language = AppLocalizations.of(context)!;
+
     final statusColor = getStatusColor(complaint.status);
     final priorityColor = getPriorityColor(complaint.priority);
-    final categoryName = complaint.complaintType?.name ?? "Complaint";
+    // final categoryName = complaint.complaintType?.name ?? "Complaint";
+    final categoryName =
+    complaint.complaintType?.name ??
+    language.complaint;
     final categoryIcon = getCategoryIcon(categoryName);
     final categoryColor = getCategoryColor(categoryName);
 
@@ -461,8 +479,13 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                                 ),
                               ),
                               const SizedBox(width: 5),
-                              Text(
-                                complaint.priority.toUpperCase(),
+Text(
+  complaint.priority.toLowerCase() == 'low'
+      ? language.low
+      : complaint.priority.toLowerCase() == 'normal'
+          ? language.normal
+          : language.high,
+
                                 style: TextStyle(
                                   color: priorityColor,
                                   fontWeight: FontWeight.w800,
@@ -515,8 +538,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                "Created on ${formatDate(complaint.createdAt)}",
-                                style: TextStyle(
+  "${language.createdOn} ${formatDate(complaint.createdAt)}",                                style: TextStyle(
                                   color: Colors.grey[500],
                                   fontSize: 11,
                                   fontWeight: FontWeight.w500,
@@ -533,8 +555,16 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: statusColor.withOpacity(0.15), width: 1),
                           ),
-                          child: Text(
-                            complaint.status.replaceAll('_', ' ').toUpperCase(),
+                          child: 
+                            // complaint.status.replaceAll('_', ' ').toUpperCase(),
+                            Text(
+  complaint.status.toLowerCase() == 'open'
+      ? language.open
+      : complaint.status.toLowerCase() ==
+              'in_progress'
+          ? language.inProgress
+          : language.resolved,
+
                             style: TextStyle(
                               color: statusColor,
                               fontWeight: FontWeight.w800,
@@ -570,6 +600,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   void _showTicketActionSheet(Complaint complaint) {
+        final language = AppLocalizations.of(context)!;
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -597,7 +629,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
-                    "Ticket Actions",
+                   language.ticketActions,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -615,11 +647,11 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                     child: const Icon(Icons.edit_outlined, color: AppColors.primary, size: 20),
                   ),
-                  title: const Text(
-                    "Edit Complaint",
+                  title:  Text(
+                   language.editComplaint,
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                   ),
-                  subtitle: const Text("Modify your issue description"),
+                  subtitle:  Text(language.editComplaintSubtitle),
                   onTap: () {
                     Navigator.pop(sheetContext);
                     final complaintTypes = context.read<TicketsCubit>().state.complaintTypes;
@@ -636,11 +668,11 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                     child: const Icon(Icons.delete_outline_rounded, color: Colors.red, size: 20),
                   ),
-                  title: const Text(
-                    "Delete Complaint",
+                  title: Text(
+                    language.deleteComplaint,
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: Colors.red),
                   ),
-                  subtitle: const Text("Permanently remove this ticket"),
+                  subtitle:  Text(language.deleteComplaintSubtitle),
                   onTap: () {
                     Navigator.pop(sheetContext);
                     _showDeleteComplaintDialog(complaint);
@@ -655,6 +687,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   void _showEditComplaintSheet(Complaint complaint, List<ComplaintType> complaintTypes) {
+        final language = AppLocalizations.of(context)!;
+
     int currentTypeId = complaint.complaintTypeId;
     String currentPriority = complaint.priority;
     final controller = TextEditingController(text: complaint.description);
@@ -697,7 +731,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "Edit Complaint",
+                   language.editComplaint,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
@@ -706,7 +740,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      "Ticket ID: #${complaint.id}",
+                      "${language.ticketId}: #${complaint.id}",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[500],
@@ -715,8 +749,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 20),
 
-                    const Text(
-                      "Complaint Category",
+                     Text(
+                      language.complaintCategory,
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 14,
@@ -794,8 +828,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
 
                     const SizedBox(height: 20),
 
-                    const Text(
-                      "Priority",
+                     Text(
+                    language.priority,
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 14,
@@ -805,19 +839,19 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        _buildModalPriorityChip("low", "Low", const Color(0xFF10B981), currentPriority, (val) {
+                        _buildModalPriorityChip("low", language.low, const Color(0xFF10B981), currentPriority, (val) {
                           setModalState(() {
                             currentPriority = val;
                           });
                         }),
                         const SizedBox(width: 10),
-                        _buildModalPriorityChip("normal", "Normal", const Color(0xFF3B82F6), currentPriority, (val) {
+                        _buildModalPriorityChip("normal", language.normal, const Color(0xFF3B82F6), currentPriority, (val) {
                           setModalState(() {
                             currentPriority = val;
                           });
                         }),
                         const SizedBox(width: 10),
-                        _buildModalPriorityChip("high", "High", const Color(0xFFEF4444), currentPriority, (val) {
+                        _buildModalPriorityChip("high", language.high, const Color(0xFFEF4444), currentPriority, (val) {
                           setModalState(() {
                             currentPriority = val;
                           });
@@ -827,8 +861,8 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
 
                     const SizedBox(height: 20),
 
-                    const Text(
-                      "Description",
+                     Text(
+                      language.description,
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 14,
@@ -842,8 +876,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                       maxLength: 300,
                       style: const TextStyle(fontSize: 14, color: Color(0xFF1E293B)),
                       decoration: InputDecoration(
-                        hintText: "Enter updated description...",
-                        fillColor: Colors.white,
+hintText: language.enterUpdatedDescription,                        fillColor: Colors.white,
                         filled: true,
                         contentPadding: const EdgeInsets.all(16),
                         border: OutlineInputBorder(
@@ -874,7 +907,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                             ),
                             onPressed: () => Navigator.pop(sheetContext),
                             child: Text(
-                              "Cancel",
+                             language.cancel,
                               style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -915,14 +948,14 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
 
                               messenger.showSnackBar(
                                 SnackBar(
-                                  content: Text(success ? "Complaint updated successfully" : "Failed to update complaint"),
+                                  content: Text(success ?language.complaintUpdatedSuccessfully : language.failedToUpdateComplaint),
                                   backgroundColor: success ? Colors.green : Colors.red,
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 ),
                               );
                             },
-                            child: const Text("Save Changes", style: TextStyle(fontWeight: FontWeight.bold)),
+                            child:  Text(language.saveChanges, style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
@@ -940,12 +973,15 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   void _showCategorySelectionSheet({
+    
     required BuildContext context,
     required List<ComplaintType> complaintTypes,
     required int currentSelectedId,
     required Function(int) onSelected,
   }) {
+      final language = AppLocalizations.of(context)!;
     showModalBottomSheet(
+      
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -968,11 +1004,11 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding:  EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
-                    "Select Category",
+                   language.selectCategory,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -1043,6 +1079,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   Widget _buildModalPriorityChip(
+    
     String value,
     String label,
     Color color,
@@ -1093,24 +1130,24 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
   }
 
   void _showDeleteComplaintDialog(Complaint complaint) {
+    final language = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          title: const Text(
-            "Delete Complaint?",
+          title:  Text(
+           language.deleteComplaintTitle,
             style: TextStyle(fontWeight: FontWeight.w800),
           ),
           content: Text(
-            "Are you sure you want to delete this complaint? This action cannot be undone.",
-            style: TextStyle(color: Colors.grey[600], height: 1.4),
+language.deleteComplaintMessage,            style: TextStyle(color: Colors.grey[600], height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
               child: Text(
-                "Cancel",
+                language.cancel,
                 style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
               ),
             ),
@@ -1130,7 +1167,10 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(success ? "Complaint deleted successfully" : "Failed to delete complaint"),
+                      content: Text(
+success
+ ? language.complaintDeletedSuccessfully
+ : language.failedToDeleteComplaint                        ),
                       backgroundColor: success ? Colors.green : Colors.red,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1138,7 +1178,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
                   );
                 }
               },
-              child: const Text("Delete", style: TextStyle(fontWeight: FontWeight.bold)),
+              child:  Text(language.delete, style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         );

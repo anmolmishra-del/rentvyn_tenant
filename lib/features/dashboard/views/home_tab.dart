@@ -3,6 +3,7 @@ import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
 import 'package:intl/intl.dart';
+import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -44,7 +45,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+  final language = AppLocalizations.of(context)!;
     final firstName = _owner?.firstName ?? 'Tenant';
     final rent = _owner?.rent ?? 0;
     final formattedRent = '₹${rent.toStringAsFixed(0)}';
@@ -124,8 +125,7 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Welcome back,',
-                              style: theme.textTheme.bodyMedium?.copyWith(
+ language.welcomeBack,                              style: theme.textTheme.bodyMedium?.copyWith(
                                 color: Colors.grey[500],
                                 fontWeight: FontWeight.w500,
                               ),
@@ -185,7 +185,8 @@ class _HomeTabState extends State<HomeTab> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'MONTHLY RENT DUE',
+                                // 'MONTHLY RENT DUE',
+                                language.monthlyRentDue,
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.8),
                                   fontWeight: FontWeight.bold,
@@ -224,7 +225,9 @@ class _HomeTabState extends State<HomeTab> {
                                       Colors.white.withValues(alpha: 0.7)),
                               const SizedBox(width: 6),
                               Text(
-                                'Due on ${formatDate(joinedDate)} of every month',
+                                  '${language.dueOn} ${formatDate(joinedDate)} ${language.everyMonth}',
+
+                                // 'Due on ${formatDate(joinedDate)} of every month',
                                 style: TextStyle(
                                     color:
                                         Colors.white.withValues(alpha: 0.8),
@@ -250,9 +253,12 @@ class _HomeTabState extends State<HomeTab> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
+                                        // city.isNotEmpty
+                                        //     ? city
+                                        //     : 'Rentvyn PG',
                                         city.isNotEmpty
-                                            ? city
-                                            : 'Rentvyn PG',
+    ? city
+    : language.rentvynPg,
                                         style: TextStyle(
                                             color: Colors.white
                                                 .withValues(alpha: 0.9),
@@ -262,8 +268,11 @@ class _HomeTabState extends State<HomeTab> {
                                       const SizedBox(height: 2),
                                       Text(
                                         roomId != '—'
-                                            ? 'Room $roomId'
-                                            : 'Room —',
+    ? '${language.room} $roomId'
+    : '${language.room} —',
+                                        // roomId != '—'
+                                        //     ? 'Room $roomId'
+                                        //     : 'Room —',
                                         style: TextStyle(
                                             color: Colors.white
                                                 .withValues(alpha: 0.7),
@@ -284,7 +293,9 @@ class _HomeTabState extends State<HomeTab> {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  child: const Text('Pay Now',
+                                  child:  Text(
+                                    // 'Pay Now',
+                                    language.payNow,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13)),
@@ -302,7 +313,9 @@ class _HomeTabState extends State<HomeTab> {
                       children: [
                         Expanded(
                           child: _buildStatCard(
-                            label: 'Security Deposit',
+                            label: 
+                            // 'Security Deposit',
+                            language.securityDeposit,
                             value: formattedDeposit,
                             icon: Icons.shield_rounded,
                             color: const Color(0xFF7C3AED),
@@ -311,12 +324,18 @@ class _HomeTabState extends State<HomeTab> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _buildStatCard(
-                            label: 'Room No.',
-                            value: roomId != '—' ? 'Room $roomId' : '—',
+                            label: 
+                            // 'Room No.',
+                            language.roomNumber,
+                            value: roomId != '—'
+    ? '${language.room} $roomId'
+    : '—',
+                            // value: roomId != '—' ? 'Room $roomId' : '—',
                             icon: Icons.bed_rounded,
                             color: AppColors.primary,
                           ),
                         ),
+                        
                       ],
                     ),
                     const SizedBox(height: 28),
@@ -356,7 +375,9 @@ class _HomeTabState extends State<HomeTab> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Introducing Auto-Pay! 🚀',
+                                  // 'Introducing Auto-Pay! 🚀',
+                                    language.introducingAutoPay,
+
                                   style:
                                       theme.textTheme.titleSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -365,7 +386,8 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Link UPI/Card for automatic monthly rent & double cashback rewards.',
+                                  language.autoPayDescription,
+                                  // 'Link UPI/Card for automatic monthly rent & double cashback rewards.',
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                     fontSize: 12,
@@ -382,7 +404,9 @@ class _HomeTabState extends State<HomeTab> {
 
                     // ── Profile & Stay Overview ───────────────────────────
                     Text(
-                      'Profile & Stay Overview',
+                        language.profileStayOverview,
+
+                      // 'Profile & Stay Overview',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.3,
@@ -398,11 +422,18 @@ class _HomeTabState extends State<HomeTab> {
                       backgroundColor: verified
                           ? const Color(0xFFE0F2F1)
                           : const Color(0xFFFFF3E0),
-                      title: 'Identity Verification',
+                      // title: 'Identity Verification',
+                      title: language.identityVerification,
                       subtitle: verified
-                          ? 'Your identity has been verified successfully.'
-                          : 'Your identity verification is pending.',
-                      statusText: verified ? 'Verified' : 'Pending',
+    ? language.identityVerifiedMessage
+    : language.identityPendingMessage,
+                      // subtitle: verified
+                      //     ? 'Your identity has been verified successfully.'
+                      //     : 'Your identity verification is pending.',
+                      // statusText: verified ? 'Verified' : 'Pending',
+                      statusText: verified
+    ? language.verified
+    : language.pending,
                       statusColor:
                           verified ? Colors.teal : Colors.orange,
                       statusBg: verified
@@ -417,11 +448,18 @@ class _HomeTabState extends State<HomeTab> {
                       backgroundColor: active
                           ? AppColors.primary.withValues(alpha: 0.1)
                           : Colors.red.withValues(alpha: 0.1),
-                      title: 'Stay Status',
+                      // title: 'Stay Status',
+                      title: language.stayStatus,
                       subtitle: active
-                          ? 'Active contract. No notice period raised.'
-                          : 'Your stay is currently inactive.',
-                      statusText: active ? 'Active Stay' : 'Inactive',
+    ? language.activeStayMessage
+    : language.inactiveStayMessage,
+                      // subtitle: active
+                      //     ? 'Active contract. No notice period raised.'
+                      //     : 'Your stay is currently inactive.',
+                      // statusText: active ? 'Active Stay' : 'Inactive',
+                      statusText: active
+    ? language.activeStay
+    : language.inactive,
                       statusColor: active ? AppColors.primary : Colors.red,
                       statusBg: active
                           ? AppColors.primary.withValues(alpha: 0.1)

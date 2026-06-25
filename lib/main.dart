@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
+import 'package:rentvyn_tenant/features/language/cubit/language_cubit.dart';
+import 'package:rentvyn_tenant/features/language/state/language_state.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
+import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 import 'core/theme/app_theme.dart';
 import 'core/constants/app_constants.dart';
@@ -30,16 +34,40 @@ class MyApp extends StatelessWidget {
         BlocProvider<TicketsCubit>(
           create: (_) => TicketsCubit(),
         ),
+        BlocProvider(
+  create: (_) =>
+      LanguageCubit()..loadLanguage(),
+),
       ],
-      child: MaterialApp(
-        title: AppConstants.appName,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        initialRoute: AppRoutes.splash,
-        onGenerateRoute: AppRoutes.generateRoute,
-        debugShowCheckedModeBanner: false,
-      ),
+      child: BlocBuilder<LanguageCubit, LanguageState>(
+        builder: (BuildContext context, state) {  
+            print(
+      "MaterialApp Locale => ${state.locale.languageCode}",
+    );
+        return MaterialApp(
+           locale: state.locale,
+
+          title: AppConstants.appName,
+               localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+        
+          supportedLocales:  [
+            Locale('en'),
+            Locale('te'),
+            Locale('hi'),
+          ],
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
+          initialRoute: AppRoutes.splash,
+          onGenerateRoute: AppRoutes.generateRoute,
+          debugShowCheckedModeBanner: false,
+        );
+  }),
     );
   }
 }

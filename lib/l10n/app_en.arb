@@ -1,0 +1,121 @@
+{
+  "welcomeBack": "Welcome back,",
+  "monthlyRentDue": "MONTHLY RENT DUE",
+  "payNow": "Pay Now",
+  "securityDeposit": "Security Deposit",
+  "roomNumber": "Room No.",
+  "introducingAutoPay": "Introducing Auto-Pay! 🚀",
+  "autoPayDescription": "Link UPI/Card for automatic monthly rent & double cashback rewards.",
+  "profileStayOverview": "Profile & Stay Overview",
+  "identityVerification": "Identity Verification",
+  "identityVerifiedMessage": "Your identity has been verified successfully.",
+  "identityPendingMessage": "Your identity verification is pending.",
+  "stayStatus": "Stay Status",
+  "activeStayMessage": "Active contract. No notice period raised.",
+  "inactiveStayMessage": "Your stay is currently inactive.",
+  "verified": "Verified",
+  "pending": "Pending",
+  "activeStay": "Active Stay",
+  "inactive": "Inactive",
+  "noNewNotifications": "No new notifications",
+  "rentvynPg": "Rentvyn PG",
+  "room": "Room",
+  "city": "City",
+  "tenant": "Tenant",
+  "dueOn": "Due on",
+  "everyMonth": "of every month",
+
+  "myProfile": "My Profile",
+  "logOut": "Log Out",
+  "active": "Active",
+  "unverified": "Unverified",
+
+  "personalDetails": "Personal Details",
+  "phone": "Phone",
+  "altPhone": "Alt. Phone",
+  "gender": "Gender",
+  "address": "Address",
+  "cityState": "City / State",
+  "zipcode": "Zipcode",
+
+  "roomRentDetails": "Room & Rent Details",
+  "roomNo": "Room No",
+  "monthlyRent": "Monthly Rent",
+  "joinDate": "Join Date",
+
+  "emergencyContact": "Emergency Contact",
+  "name": "Name",
+  "relationship": "Relationship",
+
+  "rentalAgreement": "Rental Agreement",
+  "rentalAgreementSubtitle": "ID, monthly rent, download PDF",
+
+  "policeVerification": "Police Verification (BG Check)",
+  "policeVerificationSubtitle": "e-KYC verification status & details",
+
+  "roommateDetails": "Roommate Details",
+  "roommateDetailsSubtitle": "Occupants in your room",
+
+  "language": "Language",
+  "languageSubtitle": "English / Telugu / Hindi",
+    "raiseComplaint": "Raise Complaint",
+  "selectCategory": "Select Category",
+  "complaintCategory": "Complaint Category",
+  "selectPriority": "Select Priority",
+  "description": "Description",
+  "submitComplaint": "Submit Complaint",
+  "complaintSubmittedSuccessfully": "Complaint Submitted Successfully",
+  "pleaseDescribeIssue": "Please describe your issue",
+
+  "complaintFormInfo": "Fill out this form to submit your issue. Our management team will check it and update the status.",
+
+  "descriptionHint": "Briefly explain the issue (e.g. WiFi not working since morning, leaking faucet in washroom...)",
+
+  "low": "Low",
+  "normal": "Normal",
+  "supportTickets": "Support Tickets",
+"raiseTicket": "Raise Ticket",
+
+"all": "All",
+"open": "Open",
+"inProgress": "In Progress",
+"resolved": "Resolved",
+
+"total": "Total",
+
+"noTicketsFound": "No Tickets Found",
+"noTicketsMessage": "You haven't raised any support tickets yet. Tap the button below to report an issue.",
+"noTicketsFilterMessage": "No tickets match the selected status filter.",
+"viewAllTickets": "View All Tickets",
+
+"complaint": "Complaint",
+"createdOn": "Created on",
+
+"ticketActions": "Ticket Actions",
+"editComplaint": "Edit Complaint",
+"editComplaintSubtitle": "Modify your issue description",
+
+"deleteComplaint": "Delete Complaint",
+"deleteComplaintSubtitle": "Permanently remove this ticket",
+
+"ticketId": "Ticket ID",
+
+"priority": "Priority",
+
+"enterUpdatedDescription": "Enter updated description...",
+
+"cancel": "Cancel",
+"saveChanges": "Save Changes",
+
+"complaintUpdatedSuccessfully": "Complaint updated successfully",
+"failedToUpdateComplaint": "Failed to update complaint",
+
+"deleteComplaintTitle": "Delete Complaint?",
+"deleteComplaintMessage": "Are you sure you want to delete this complaint? This action cannot be undone.",
+
+"delete": "Delete",
+
+"complaintDeletedSuccessfully": "Complaint deleted successfully",
+"failedToDeleteComplaint": "Failed to delete complaint",
+  "high": "High"
+}

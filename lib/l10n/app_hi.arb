@@ -1,0 +1,122 @@
+{
+  "@@locale": "hi",
+
+  "welcomeBack": "वापसी पर स्वागत है,",
+  "monthlyRentDue": "मासिक किराया देय",
+  "payNow": "अभी भुगतान करें",
+  "securityDeposit": "सिक्योरिटी डिपॉज़िट",
+  "roomNumber": "कमरा नं.",
+  "introducingAutoPay": "ऑटो-पे पेश है! 🚀",
+  "autoPayDescription": "स्वचालित किराया भुगतान के लिए UPI/Card लिंक करें।",
+  "profileStayOverview": "प्रोफ़ाइल और निवास विवरण",
+  "identityVerification": "पहचान सत्यापन",
+  "identityVerifiedMessage": "आपकी पहचान सफलतापूर्वक सत्यापित हो गई है।",
+  "identityPendingMessage": "आपका पहचान सत्यापन लंबित है।",
+  "stayStatus": "निवास स्थिति",
+  "activeStayMessage": "सक्रिय अनुबंध। कोई नोटिस अवधि नहीं।",
+  "inactiveStayMessage": "आपका निवास वर्तमान में निष्क्रिय है।",
+  "verified": "सत्यापित",
+  "pending": "लंबित",
+  "activeStay": "सक्रिय निवास",
+  "inactive": "निष्क्रिय",
+  "noNewNotifications": "कोई नई सूचना नहीं",
+
+  "rentvynPg": "Rentvyn PG",
+  "room": "कमरा",
+  "city": "शहर",
+  "tenant": "किरायेदार",
+  "dueOn": "देय तिथि",
+  "everyMonth": "हर महीने",
+  "myProfile": "मेरी प्रोफ़ाइल",
+  "logOut": "लॉग आउट",
+  "active": "सक्रिय",
+  "unverified": "असत्यापित",
+  "personalDetails": "व्यक्तिगत विवरण",
+  "phone": "फ़ोन",
+  "altPhone": "वैकल्पिक फ़ोन",
+  "gender": "लिंग",
+  "address": "पता",
+  "cityState": "शहर / राज्य",
+  "zipcode": "पिन कोड",
+
+  "roomRentDetails": "कमरा और किराया विवरण",
+  "roomNo": "कमरा नं.",
+  "monthlyRent": "मासिक किराया",
+  "joinDate": "जॉइन तिथि",
+
+  "emergencyContact": "आपातकालीन संपर्क",
+  "name": "नाम",
+  "relationship": "संबंध",
+
+  "rentalAgreement": "किराया समझौता",
+  "rentalAgreementSubtitle": "ID, मासिक किराया, PDF डाउनलोड",
+
+  "policeVerification": "पुलिस सत्यापन (BG Check)",
+  "policeVerificationSubtitle": "e-KYC सत्यापन स्थिति और विवरण",
+
+  "roommateDetails": "रूममेट विवरण",
+  "roommateDetailsSubtitle": "आपके कमरे के निवासी",
+
+  "language": "भाषा",
+  "languageSubtitle": "अंग्रेज़ी / तेलुगु / हिंदी",
+   "raiseComplaint": "शिकायत दर्ज करें",
+  "selectCategory": "श्रेणी चुनें",
+  "complaintCategory": "शिकायत श्रेणी",
+  "selectPriority": "प्राथमिकता चुनें",
+  "description": "विवरण",
+  "submitComplaint": "शिकायत जमा करें",
+  "complaintSubmittedSuccessfully": "शिकायत सफलतापूर्वक जमा की गई",
+  "pleaseDescribeIssue": "कृपया अपनी समस्या का विवरण दें",
+
+  "complaintFormInfo": "अपनी समस्या दर्ज करने के लिए यह फ़ॉर्म भरें। हमारी प्रबंधन टीम इसकी जांच करेगी और स्थिति अपडेट करेगी।",
+
+  "descriptionHint": "समस्या का संक्षिप्त विवरण दें (जैसे सुबह से WiFi काम नहीं कर रहा है, वॉशरूम में लीकेज है...)",
+
+  "low": "कम",
+  "normal": "सामान्य",
+  "supportTickets": "सपोर्ट टिकट",
+"raiseTicket": "टिकट दर्ज करें",
+
+"all": "सभी",
+"open": "खुला",
+"inProgress": "प्रगति में",
+"resolved": "सुलझाया गया",
+
+"total": "कुल",
+
+"noTicketsFound": "कोई टिकट नहीं मिला",
+"noTicketsMessage": "आपने अभी तक कोई टिकट दर्ज नहीं किया है। समस्या दर्ज करने के लिए नीचे दिए गए बटन पर टैप करें।",
+"noTicketsFilterMessage": "चयनित स्थिति के लिए कोई टिकट नहीं मिला।",
+"viewAllTickets": "सभी टिकट देखें",
+
+"complaint": "शिकायत",
+"createdOn": "बनाने की तिथि",
+
+"ticketActions": "टिकट कार्य",
+"editComplaint": "शिकायत संपादित करें",
+"editComplaintSubtitle": "अपनी समस्या का विवरण बदलें",
+
+"deleteComplaint": "शिकायत हटाएं",
+"deleteComplaintSubtitle": "इस टिकट को स्थायी रूप से हटाएं",
+
+"ticketId": "टिकट ID",
+
+"priority": "प्राथमिकता",
+
+"enterUpdatedDescription": "अपडेट किया गया विवरण दर्ज करें...",
+
+"cancel": "रद्द करें",
+"saveChanges": "परिवर्तन सहेजें",
+
+"complaintUpdatedSuccessfully": "शिकायत सफलतापूर्वक अपडेट की गई",
+"failedToUpdateComplaint": "शिकायत अपडेट नहीं हो सकी",
+
+"deleteComplaintTitle": "क्या शिकायत हटानी है?",
+"deleteComplaintMessage": "क्या आप वाकई इस शिकायत को हटाना चाहते हैं? यह कार्रवाई वापस नहीं की जा सकती।",
+
+"delete": "हटाएं",
+
+"complaintDeletedSuccessfully": "शिकायत सफलतापूर्वक हटाई गई",
+"failedToDeleteComplaint": "शिकायत हटाई नहीं जा सकी",
+  "high": "उच्च"
+}

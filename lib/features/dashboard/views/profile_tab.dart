@@ -5,6 +5,8 @@ import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/agreement_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/verification_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/roommate_details_page.dart';
+import 'package:rentvyn_tenant/features/language/view/language_page.dart';
+import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 class ProfileTab extends StatefulWidget {
   final VoidCallback? onLogout;
@@ -36,10 +38,11 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
+      final language = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('My Profile',
+        title:  Text(language.myProfile,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -47,7 +50,8 @@ class _ProfileTabState extends State<ProfileTab> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout_rounded, color: Colors.redAccent),
-            tooltip: 'Log Out',
+            // tooltip: 'Log Out',
+            tooltip: language.logOut,
             onPressed: widget.onLogout,
           )
         ],
@@ -71,6 +75,16 @@ class _ProfileTabState extends State<ProfileTab> {
                     const SizedBox(height: 16),
                     _buildMenuOptionsCard(),
                     const SizedBox(height: 24),
+
+// _buildMenuItem(
+//   context,
+//   icon: Icons.language,
+//   title: 'Language',
+//   subtitle:
+//       'English / Telugu / Hindi',
+//   destination:
+//       const LanguagePage(),
+// ),
                   ],
                 ),
               ),
@@ -80,6 +94,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   // ── Profile header ─────────────────────────────────────────────────────────
   Widget _buildProfileHeader() {
+      final language = AppLocalizations.of(context)!;
     final name = _owner?.name ?? 'Tenant';
     final email = _owner?.email ?? '';
     final initials = name.trim().isEmpty
@@ -174,15 +189,21 @@ class _ProfileTabState extends State<ProfileTab> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildBadge(
-                label: _owner?.active == true ? 'Active' : 'Inactive',
+                label: _owner?.active == true
+    ? language.active
+    : language.inactive,
+                // label: _owner?.active == true ? 'Active' : 'Inactive',
                 color: _owner?.active == true ? Colors.green : Colors.red,
                 icon: Icons.circle,
               ),
               const SizedBox(width: 10),
               _buildBadge(
+                // label: _owner?.identityVerified == true
+                //     ? 'Verified'
+                //     : 'Unverified',
                 label: _owner?.identityVerified == true
-                    ? 'Verified'
-                    : 'Unverified',
+    ? language.verified
+    : language.unverified,
                 color: _owner?.identityVerified == true
                     ? AppColors.primary
                     : Colors.orange,
@@ -221,66 +242,71 @@ class _ProfileTabState extends State<ProfileTab> {
 
   // ── Personal details ───────────────────────────────────────────────────────
   Widget _buildPersonalDetailsCard() {
+      final language = AppLocalizations.of(context)!;
     final gender = _owner?.gender ?? '';
     final phone = _owner?.phoneNumber ?? '';
     final altPhone = _owner?.alternatePhoneNumber ?? '';
 
     return _buildCard(
       icon: Icons.person_outline_rounded,
-      title: 'Personal Details',
+      // title: 'Personal Details',
+      title: language.personalDetails,
       children: [
-        _row('Phone', phone.isNotEmpty ? '+91 $phone' : '—'),
+        _row(language.phone, phone.isNotEmpty ? '+91 $phone' : '—'),
         if (altPhone.isNotEmpty) ...[
           const Divider(height: 24),
-          _row('Alt. Phone', '+91 $altPhone'),
+          _row(language.altPhone, '+91 $altPhone'),
         ],
         const Divider(height: 24),
-        _row('Gender', _capitalize(gender)),
+        _row(language.gender, _capitalize(gender)),
         const Divider(height: 24),
-        _row('Address', _owner?.address ?? '—'),
+        _row(language.address, _owner?.address ?? '—'),
         const Divider(height: 24),
         _row(
-            'City / State',
+            language.cityState,
             [_owner?.city, _owner?.state]
                 .where((e) => e != null && e.isNotEmpty)
                 .join(', ')),
         const Divider(height: 24),
-        _row('Zipcode', _owner?.zipcode ?? '—'),
+        _row(language.zipcode, _owner?.zipcode ?? '—'),
       ],
     );
   }
 
   // ── Room details ────────────────────────────────────────────────────────────
   Widget _buildRoomDetailsCard() {
+      final language = AppLocalizations.of(context)!;
     final joinDate = _formatDate(_owner?.joinDate ?? '');
     return _buildCard(
       icon: Icons.bed_rounded,
-      title: 'Room & Rent Details',
+      // title: 'Room & Rent Details',
+      title: language.roomRentDetails,
       children: [
-        _row('Room No', _owner?.roomId?.toString() ?? '—'),
+        _row(language.roomNo, _owner?.roomId?.toString() ?? '—'),
         const Divider(height: 24),
         // _row('Hostel ID', _owner?.hostelId.toString() ?? '—'),
         // const Divider(height: 24),
-        _row('Monthly Rent', _owner?.formattedRent ?? '—'),
+        _row(language.monthlyRent, _owner?.formattedRent ?? '—'),
         const Divider(height: 24),
-        _row('Security Deposit', _owner?.formattedDeposit ?? '—'),
+        _row(language.securityDeposit, _owner?.formattedDeposit ?? '—'),
         const Divider(height: 24),
-        _row('Join Date', joinDate.isNotEmpty ? joinDate : '—'),
+        _row(language.joinDate, joinDate.isNotEmpty ? joinDate : '—'),
       ],
     );
   }
 
   // ── Emergency contact ───────────────────────────────────────────────────────
   Widget _buildEmergencyContactCard() {
+     final language = AppLocalizations.of(context)!;
     return _buildCard(
       icon: Icons.emergency_rounded,
-      title: 'Emergency Contact',
+      title: language.emergencyContact,
       children: [
-        _row('Name', _owner?.emergencyContactName ?? '—'),
+        _row(language.name, _owner?.emergencyContactName ?? '—'),
         const Divider(height: 24),
-        _row('Phone', _owner?.emergencyContactPhone ?? '—'),
+        _row(language.phone, _owner?.emergencyContactPhone ?? '—'),
         const Divider(height: 24),
-        _row('Relationship',
+        _row(language.relationship,
             _capitalize(_owner?.emergencyContactRelationship ?? '')),
       ],
     );
@@ -288,6 +314,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   // ── Navigation menu cards ───────────────────────────────────────────────────
   Widget _buildMenuOptionsCard() {
+      final language = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -307,26 +334,43 @@ class _ProfileTabState extends State<ProfileTab> {
           _buildMenuItem(
             context,
             icon: Icons.assignment_outlined,
-            title: 'Rental Agreement',
-            subtitle: 'ID, monthly rent, download PDF',
+            title: language.rentalAgreement,
+subtitle: language.rentalAgreementSubtitle,
+            // title: 'Rental Agreement',
+            // subtitle: 'ID, monthly rent, download PDF',
             destination: const AgreementDetailsPage(),
           ),
           const Divider(height: 1),
           _buildMenuItem(
             context,
             icon: Icons.gpp_good_outlined,
-            title: 'Police Verification (BG Check)',
-            subtitle: 'e-KYC verification status & details',
+            title: language.policeVerification,
+subtitle: language.policeVerificationSubtitle,
+            // title: 'Police Verification (BG Check)',
+            // subtitle: 'e-KYC verification status & details',
             destination: const VerificationDetailsPage(),
           ),
           const Divider(height: 1),
           _buildMenuItem(
             context,
             icon: Icons.people_outline_rounded,
-            title: 'Roommate Details',
-            subtitle: 'Occupants in your room',
+            title: language.roommateDetails,
+subtitle: language.roommateDetailsSubtitle,
+            // title: 'Roommate Details',
+            // subtitle: 'Occupants in your room',
             destination: const RoommateDetailsPage(),
           ),
+            const Divider(height: 1),
+
+  _buildMenuItem(
+    context,
+    icon: Icons.language_rounded,
+    title: language.language,
+subtitle: language.languageSubtitle,
+    // title: 'Language',
+    // subtitle: 'English / Telugu / Hindi',
+    destination: const LanguagePage(),
+  ),
         ],
       ),
     );
