@@ -40,8 +40,8 @@ class TicketsCubit extends Cubit<TicketsState> {
       final success = await TicketsService.createComplaint(
         hostelId: tenant.hostelId,
         tenantId: tenant.id,
-        ownerId: 6,
-        //  ownerId: tenant.ownerId ?? 0,    
+        // ownerId: 6,
+         ownerId: tenant.ownerId ?? 0,    
         complaintTypeId: complaintTypeId,
         description: description,
         priority: priority,
