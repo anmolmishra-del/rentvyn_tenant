@@ -190,10 +190,19 @@ Future<bool> deleteComplaint(
         return;
       }
 
+      print("--- LOADING TICKETS FOR TENANT ---");
+      print("Tenant ID: ${tenant.id}");
+      print("Tenant Name: ${tenant.name}");
+      print("Hostel ID: ${tenant.hostelId}");
+      print("---------------------------------");
+
       final tickets =
           await TicketsService.getTenantTickets(
         tenant.id,
       );
+
+      // Sort tickets descending by ID so latest complaints come first
+      tickets.sort((a, b) => b.id.compareTo(a.id));
 
       emit(
         state.copyWith(

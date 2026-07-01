@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
 import 'package:intl/intl.dart';
+import 'package:rentvyn_tenant/features/notices/cubit/notice_cubit.dart';
+import 'package:rentvyn_tenant/features/notices/views/notice_carousel.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 class HomeTab extends StatefulWidget {
@@ -29,6 +32,11 @@ class _HomeTabState extends State<HomeTab> {
         _owner = owner;
         _loading = false;
       });
+      try {
+        context.read<NoticeCubit>().loadNotices();
+      } catch (e) {
+        print("Error loading notices in home_tab: $e");
+      }
     }
   }
   String formatDate(String? dateString) {
@@ -159,6 +167,9 @@ class _HomeTabState extends State<HomeTab> {
                       ],
                     ),
                     const SizedBox(height: 24),
+
+                    // Notices / Announcements Carousel
+                    const NoticeCarousel(),
 
                     // ── Total Dues Card ───────────────────────────────────
                     Container(

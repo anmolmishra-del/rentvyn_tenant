@@ -18,4 +18,6 @@ static const complaintTypes ="$authBase/complaints/types";
 static String tenantComplaints(int tenantId,) => "$authBase/complaints/tenant/$tenantId";
 static String updateComplaint(int id, ) =>"$authBase/complaints/$id";
 static String deleteComplaint(int id,) =>"$authBase/complaints/$id";
+static const String notices = "$authBase/notices/";
+static String hostelNotices(int hostelId) => "$authBase/notices/hostel/$hostelId";
 }

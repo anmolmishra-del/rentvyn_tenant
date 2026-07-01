@@ -7,6 +7,7 @@ import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import 'package:rentvyn_tenant/features/language/cubit/language_cubit.dart';
 import 'package:rentvyn_tenant/features/language/state/language_state.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
+import 'package:rentvyn_tenant/features/notices/cubit/notice_cubit.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 import 'core/theme/app_theme.dart';
@@ -34,10 +35,13 @@ class MyApp extends StatelessWidget {
         BlocProvider<TicketsCubit>(
           create: (_) => TicketsCubit(),
         ),
+        BlocProvider<NoticeCubit>(
+          create: (_) => NoticeCubit()..loadNotices(),
+        ),
         BlocProvider(
-  create: (_) =>
-      LanguageCubit()..loadLanguage(),
-),
+          create: (_) =>
+              LanguageCubit()..loadLanguage(),
+        ),
       ],
       child: BlocBuilder<LanguageCubit, LanguageState>(
         builder: (BuildContext context, state) {  
