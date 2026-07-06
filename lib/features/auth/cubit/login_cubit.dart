@@ -81,7 +81,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(isLoading: true, error: null));
 
       final res = await AuthService.verifyOtp(phone, otp);
-print("FULL VERIFY RESPONSE => $res");
+print("FULL VERIFY RESPONSE      ,,,,,,,,,,,,,,, => $res");
       if (res != null) {
         final owner = Owner.fromJson(res);
 print("TENANT ID => ${owner.id}");

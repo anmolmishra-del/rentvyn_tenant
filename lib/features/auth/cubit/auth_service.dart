@@ -85,10 +85,14 @@ static Future<Map<String, dynamic>?> verifyOtp(
         "otp": otp,
       },
     );
-
+  print("VERIFY OTP STATUS => ${res.statusCode}");
+    print("VERIFY OTP BODY => ${res.body}");
     if (res.statusCode == 200) {
       final data =
           jsonDecode(res.body);
+    print("ACCESS TOKEN => ${data["access_token"]}");
+      print("OWNER ID => ${data["owner_id"]}");
+      print("TENANT => ${data["tenant"]}");
 
       return data;
     }

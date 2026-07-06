@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import 'package:rentvyn_tenant/features/language/cubit/language_cubit.dart';
 import 'package:rentvyn_tenant/features/language/state/language_state.dart';
+import 'package:rentvyn_tenant/features/roommate/cubit/roommate_cubit.dart';
+import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
 import 'package:rentvyn_tenant/features/notices/cubit/notice_cubit.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
@@ -42,6 +44,9 @@ class MyApp extends StatelessWidget {
           create: (_) =>
               LanguageCubit()..loadLanguage(),
         ),
+        BlocProvider(
+  create: (_) => RoommateCubit(),
+)
       ],
       child: BlocBuilder<LanguageCubit, LanguageState>(
         builder: (BuildContext context, state) {  

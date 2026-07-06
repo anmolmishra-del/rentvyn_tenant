@@ -34,11 +34,11 @@ class NoticeCubit extends Cubit<NoticeState> {
       final sortedNotices = List.of(notices);
       sortedNotices.sort((a, b) {
         try {
-          final dateA = DateTime.parse(a.createdAt);
-          final dateB = DateTime.parse(b.createdAt);
+          final dateA = DateTime.parse(a.createdAt ?? "");
+          final dateB = DateTime.parse(b.updatedAt ?? "");
           return dateB.compareTo(dateA); // Descending order (latest first)
         } catch (_) {
-          return b.id.compareTo(a.id); // Fallback to ID comparison desc
+          return b.id!.compareTo(a.id!); // Fallback to ID comparison desc
         }
       });
 

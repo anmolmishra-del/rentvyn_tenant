@@ -125,14 +125,14 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
     );
   }
 
-  Widget _buildNoticeCard(BuildContext context, Notice notice) {
+  Widget _buildNoticeCard(BuildContext context, NoticeModel notice) {
     Color bgColor;
     Color iconColor;
     Color textColor;
     IconData iconData;
     String badgeText;
 
-    switch (notice.type.toLowerCase()) {
+    switch (notice.title?.toLowerCase()) {
       case 'urgent':
         bgColor = const Color(0xFFFFF1F2); // Soft rose
         iconColor = const Color(0xFFE11D48); // Deep rose
@@ -227,7 +227,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                         ),
                       ),
                       Text(
-                        _formatNoticeDate(notice.createdAt),
+                        _formatNoticeDate(notice.createdAt??''),
                         style: TextStyle(
                           fontSize: 10.0,
                           fontWeight: FontWeight.w500,
@@ -238,7 +238,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    notice.title,
+                    notice.title??'',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -249,7 +249,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    notice.content,
+                    notice.description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -306,7 +306,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
 
   void _showNoticeDetailsSheet(
     BuildContext context,
-    Notice notice,
+    NoticeModel notice,
     Color bgColor,
     Color iconColor,
     Color textColor,
@@ -389,7 +389,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _formatNoticeDate(notice.createdAt),
+                              _formatNoticeDate(notice.createdAt??''),
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[500],
@@ -403,7 +403,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                     const SizedBox(height: 20),
                     // Title
                     Text(
-                      notice.title,
+                      notice.title??'',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -424,7 +424,7 @@ class _NoticeCarouselState extends State<NoticeCarousel> {
                         border: Border.all(color: const Color(0xFFF1F5F9)),
                       ),
                       child: Text(
-                        notice.content,
+                        notice.description,
                         style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.black87,

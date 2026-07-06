@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
+import 'package:rentvyn_tenant/core/theme/theme_provider.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/agreement_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/verification_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/roommate_details_page.dart';
 import 'package:rentvyn_tenant/features/language/view/language_page.dart';
+import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -32,19 +35,29 @@ class _ProfileTabState extends State<ProfileTab> {
       setState(() {
         _owner = owner;
         _loading = false;
+        //_owner = await AuthStrorage.geOwner();
+             //if(mounted){
+            //setState(()){
+           //_owner = owner;
+          //_loading = false;
+         //  }
+        // }
+       
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
       final language = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.background,
+backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgroundColor: AppColors.background,
       appBar: AppBar(
         title:  Text(language.myProfile,
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-        backgroundColor: Colors.white,
+            style: TextStyle(fontWeight: FontWeight.bold, )),
+        // backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
         actions: [
@@ -351,15 +364,16 @@ subtitle: language.policeVerificationSubtitle,
             destination: const VerificationDetailsPage(),
           ),
           const Divider(height: 1),
-          _buildMenuItem(
-            context,
-            icon: Icons.people_outline_rounded,
-            title: language.roommateDetails,
-subtitle: language.roommateDetailsSubtitle,
-            // title: 'Roommate Details',
-            // subtitle: 'Occupants in your room',
-            destination: const RoommateDetailsPage(),
-          ),
+_buildMenuItem(
+  context,
+  icon: Icons.people_outline_rounded,
+  title: language.roommateDetails,
+  subtitle: language.roommateDetailsSubtitle,
+  destination: RoommateDetailsPage(
+    roomId: _owner?.roomId ?? 0,
+    currentTenantId: _owner?.id ?? 0,
+  ),
+),
             const Divider(height: 1),
 
   _buildMenuItem(
@@ -371,6 +385,59 @@ subtitle: language.languageSubtitle,
     // subtitle: 'English / Telugu / Hindi',
     destination: const LanguagePage(),
   ),
+  const Divider(height: 1),
+
+// _buildMenuItem(
+//   context,
+//   icon: Icons.dark_mode_rounded,
+//   title: "Appearance",
+//   subtitle: "Light / Dark Mode",
+//   destination: const ThemePage(),
+// ),
+const Divider(height: 1),
+
+// Consumer<ThemeProvider>(
+//   builder: (context, provider, child) {
+//     return ListTile(
+//       contentPadding:
+//           const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+
+//       leading: Container(
+//         padding: const EdgeInsets.all(12),
+//         decoration: BoxDecoration(
+//           color: AppColors.primary.withValues(alpha: 0.06),
+//           borderRadius: BorderRadius.circular(14),
+//         ),
+//         child: const Icon(
+//           Icons.dark_mode_rounded,
+//           color: AppColors.primary,
+//           size: 22,
+//         ),
+//       ),
+
+//       title: const Text(
+//         "Appearance",
+//         style: TextStyle(
+//           fontWeight: FontWeight.bold,
+//           fontSize: 15,
+//         ),
+//       ),
+
+//       subtitle: Text(
+//         provider.isDarkMode ? "Dark Mode" : "Light Mode",
+//         style: TextStyle(
+//           color: Colors.grey,
+//           fontSize: 12,
+//         ),
+//       ),
+
+//       trailing: Switch(
+//         value: provider.isDarkMode,
+//         onChanged: provider.toggleTheme,
+//       ),
+//     );
+//   },
+// ),
         ],
       ),
     );

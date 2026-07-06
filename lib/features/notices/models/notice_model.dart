@@ -1,43 +1,43 @@
-class Notice {
-  final int id;
-  final int hostelId;
-  final String title;
-  final String content;
-  final String type; // 'urgent', 'maintenance', 'info'
-  final String createdAt;
-  final String updatedAt;
+class NoticeModel {
+  int hostelId;
+  String description;
+  String? title;
+  String? fromDate;
+  String? toDate;
+  int? id;
+  String? createdAt;
+  String? updatedAt;
 
-  Notice({
-    required this.id,
-    required this.hostelId,
-    required this.title,
-    required this.content,
-    required this.type,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  NoticeModel(
+      {required this.hostelId,
+      this.title,
+      required this.description,
+      this.fromDate,
+      this.toDate,
+      this.id,
+      this.createdAt,
+      this.updatedAt});
 
-  factory Notice.fromJson(Map<String, dynamic> json) {
-    return Notice(
-      id: json['id'] ?? 0,
-      hostelId: json['hostel_id'] ?? 0,
-      title: json['title'] ?? '',
-      content: json['content'] ?? json['description'] ?? '',
-      type: json['type'] ?? 'info',
-      createdAt: json['created_at'] ?? '',
-      updatedAt: json['updated_at'] ?? '',
-    );
-  }
+  NoticeModel.fromJson(Map<String, dynamic> json)
+      : hostelId = json['hostel_id'],
+        title = json['title'],
+        description = json['description'],
+        fromDate = json['from_date'],
+        toDate = json['to_date'],
+        id = json['id'],
+        createdAt = json['created_at'],
+        updatedAt = json['updated_at'];
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'hostel_id': hostelId,
-      'title': title,
-      'content': content,
-      'type': type,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hostel_id'] = this.hostelId;
+    data['title'] = this.title;
+    data['description'] = this.description;
+    data['from_date'] = this.fromDate;
+    data['to_date'] = this.toDate;
+    data['id'] = this.id;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
   }
 }

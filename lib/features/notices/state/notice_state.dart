@@ -3,7 +3,7 @@ import 'package:rentvyn_tenant/features/notices/models/notice_model.dart';
 class NoticeState {
   final bool loading;
   final String? error;
-  final List<Notice> notices;
+  final List<NoticeModel> notices;
 
   const NoticeState({
     this.loading = false,
@@ -14,7 +14,7 @@ class NoticeState {
   NoticeState copyWith({
     bool? loading,
     String? error,
-    List<Notice>? notices,
+    List<NoticeModel>? notices,
   }) {
     return NoticeState(
       loading: loading ?? this.loading,
