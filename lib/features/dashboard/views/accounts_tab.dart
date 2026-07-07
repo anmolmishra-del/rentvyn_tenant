@@ -10,7 +10,7 @@ class AccountsTab extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC), // Premium off-white fintech surface
+      backgroundColor: Colors.white, // Pure white background
       appBar: AppBar(
         title: const Text(
           'My Accounts',
@@ -20,7 +20,7 @@ class AccountsTab extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        backgroundColor: const Color(0xFFF8FAFC),
+        backgroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
@@ -38,12 +38,12 @@ class AccountsTab extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withOpacity(0.06),
                     blurRadius: 15,
                     offset: const Offset(0, 6),
                   )
                 ],
-                border: Border.all(color: const Color(0xFFF1F5F9)),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
               ),
               child: Row(
                 children: [
@@ -157,12 +157,12 @@ class AccountsTab extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
-                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 12,
                     offset: const Offset(0, 4),
                   )
                 ],
-                border: Border.all(color: const Color(0xFFF1F5F9)),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
               ),
               child: Column(
                 children: [
@@ -263,12 +263,12 @@ class AccountsTab extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.015),
+            color: Colors.black.withOpacity(0.06),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
         ],
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
       ),
       child: Row(
         children: [

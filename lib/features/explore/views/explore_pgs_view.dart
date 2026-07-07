@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 
 class ExplorePgsView extends StatefulWidget {
   const ExplorePgsView({super.key, required bool isNested});
@@ -81,7 +82,7 @@ class _ExplorePgsViewState extends State<ExplorePgsView> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white, // Pure white background
       appBar: AppBar(
         title: const Text('Explore Hostels & PGs', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
@@ -106,7 +107,15 @@ class _ExplorePgsViewState extends State<ExplorePgsView> {
                     : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
+                  borderSide: const BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
                 ),
                 filled: true,
                 fillColor: Colors.white,
@@ -156,7 +165,14 @@ class _ExplorePgsViewState extends State<ExplorePgsView> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.grey[200]!),
+                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
                         ),
                         child: Row(
                           children: [

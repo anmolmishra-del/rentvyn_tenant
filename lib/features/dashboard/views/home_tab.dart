@@ -71,7 +71,7 @@ class _HomeTabState extends State<HomeTab> {
         : name.trim().split(' ').map((e) => e[0].toUpperCase()).take(2).join();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Rentvyn Tenant',
@@ -359,12 +359,12 @@ class _HomeTabState extends State<HomeTab> {
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.02),
-                            blurRadius: 10,
+                            color: Colors.black.withValues(alpha: 0.06),
+                            blurRadius: 12,
                             offset: const Offset(0, 4),
                           )
                         ],
-                        border: Border.all(color: Colors.grey[100]!),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
                       ),
                       child: Row(
                         children: [
@@ -495,11 +495,11 @@ class _HomeTabState extends State<HomeTab> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey[100]!),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 8,
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 10,
             offset: const Offset(0, 4),
           )
         ],
@@ -555,12 +555,12 @@ class _HomeTabState extends State<HomeTab> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 8,
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 10,
             offset: const Offset(0, 4),
           )
         ],
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
       ),
       child: Row(
         children: [

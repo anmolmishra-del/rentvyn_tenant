@@ -7,7 +7,6 @@ import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import 'package:rentvyn_tenant/features/language/cubit/language_cubit.dart';
 import 'package:rentvyn_tenant/features/language/state/language_state.dart';
 import 'package:rentvyn_tenant/features/roommate/cubit/roommate_cubit.dart';
-import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
 import 'package:rentvyn_tenant/features/tickets/cubit/ticket_cubit.dart';
 import 'package:rentvyn_tenant/features/notices/cubit/notice_cubit.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';

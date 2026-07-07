@@ -18,8 +18,6 @@ class NoticeService {
       if (res.statusCode == 200) {
         final List data = jsonDecode(res.body);
         final notices = data.map((e) => NoticeModel.fromJson(e)).toList();
-        // If API returns an empty list, let's also fallback to mock notices
-        // so the user has something nice to see until notices are added.
         if (notices.isEmpty) {
           print("No notices returned from API, using mock fallbacks.");
           return [];
@@ -35,4 +33,39 @@ class NoticeService {
     }
   }
 
+  // static List<NoticeModel> _getMockNotices(int hostelId) {
+  //   final now = DateTime.now();
+  //   return [
+  //     NoticeModel(
+  //       id: 101,
+  //       hostelId: hostelId,
+  //       title: "Urgent: Water Tank Maintenance",
+  //       description: "The primary water tanks will undergo annual cleaning this Sunday from 9:00 AM to 1:00 PM. Water supply will be completely suspended during this window. Please store water in advance and plan accordingly.",
+  //       fromDate: DateTime(now.year, now.month, now.day + 2, 9, 0).toIso8601String(),
+  //       toDate: DateTime(now.year, now.month, now.day + 2, 13, 0).toIso8601String(),
+  //       createdAt: now.subtract(const Duration(hours: 3)).toIso8601String(),
+  //       updatedAt: now.subtract(const Duration(hours: 3)).toIso8601String(),
+  //     ),
+  //     NoticeModel(
+  //       id: 102,
+  //       hostelId: hostelId,
+  //       title: "Monthly PG Social & Dinner",
+  //       description: "We are hosting our monthly community social dinner this Friday at 7:30 PM in the central lawn area. Come join us for an evening of live music, interactive games, and a grand buffet! We hope to see you all there.",
+  //       fromDate: DateTime(now.year, now.month, now.day + 4, 19, 30).toIso8601String(),
+  //       toDate: DateTime(now.year, now.month, now.day + 4, 22, 30).toIso8601String(),
+  //       createdAt: now.subtract(const Duration(days: 1)).toIso8601String(),
+  //       updatedAt: now.subtract(const Duration(days: 1)).toIso8601String(),
+  //     ),
+  //     NoticeModel(
+  //       id: 103,
+  //       hostelId: hostelId,
+  //       title: "High-Speed Wi-Fi Upgrades Complete",
+  //       description: "New enterprise routers have been installed on floors 1 through 4. Connect to the 'Rentvyn_Max_5G' network using the credentials listed in your welcome kit to enjoy 200Mbps+ speeds.",
+  //       fromDate: now.subtract(const Duration(days: 1)).toIso8601String(),
+  //       toDate: now.subtract(const Duration(days: 1)).toIso8601String(),
+  //       createdAt: now.subtract(const Duration(days: 2)).toIso8601String(),
+  //       updatedAt: now.subtract(const Duration(days: 2)).toIso8601String(),
+  //     ),
+  //   ];
+  // }
 }

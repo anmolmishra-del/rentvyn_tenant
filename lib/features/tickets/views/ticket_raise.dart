@@ -152,7 +152,7 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF9F6),
+      backgroundColor: Colors.white, // Pure white background
       appBar: AppBar(
         title:  Text(
           language.supportTickets,
@@ -413,10 +413,10 @@ class _TicketsTabState extends State<TicketsTab> with SingleTickerProviderStateM
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade100, width: 1.5),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
