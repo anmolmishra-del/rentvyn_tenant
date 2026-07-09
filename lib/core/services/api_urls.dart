@@ -15,6 +15,7 @@ class ApiUrls {
  
 static const complaints ="$authBase/complaints/";
 static const complaintTypes ="$authBase/complaints/types";
+
 static String tenantComplaints(int tenantId,) => "$authBase/complaints/tenant/$tenantId";
 static String updateComplaint(int id, ) =>"$authBase/complaints/$id";
 static String deleteComplaint(int id,) =>"$authBase/complaints/$id";

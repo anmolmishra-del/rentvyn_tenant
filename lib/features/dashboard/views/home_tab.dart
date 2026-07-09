@@ -71,28 +71,28 @@ class _HomeTabState extends State<HomeTab> {
         : name.trim().split(' ').map((e) => e[0].toUpperCase()).take(2).join();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Rentvyn Tenant',
           style: TextStyle(
             fontWeight: FontWeight.w900,
-            color: AppColors.primary,
+            color: theme.colorScheme.primary,
             letterSpacing: -0.5,
           ),
         ),
-        backgroundColor: const Color(0xFFF8FAFC),
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardColor,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
+                  color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.18 : 0.04),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 )
@@ -134,7 +134,7 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Text(
  language.welcomeBack,                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[500],
+                                color: theme.colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -355,16 +355,16 @@ class _HomeTabState extends State<HomeTab> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.02),
+                            color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.18 : 0.02),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           )
                         ],
-                        border: Border.all(color: Colors.grey[100]!),
+                        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
                       ),
                       child: Row(
                         children: [
@@ -392,7 +392,7 @@ class _HomeTabState extends State<HomeTab> {
                                   style:
                                       theme.textTheme.titleSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
+                                    color: theme.colorScheme.onSurface,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -400,7 +400,7 @@ class _HomeTabState extends State<HomeTab> {
                                   language.autoPayDescription,
                                   // 'Link UPI/Card for automatic monthly rent & double cashback rewards.',
                                   style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: theme.colorScheme.onSurfaceVariant,
                                     fontSize: 12,
                                     height: 1.4,
                                   ),
@@ -493,12 +493,12 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey[100]!),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: Colors.black.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.18 : 0.02),
             blurRadius: 8,
             offset: const Offset(0, 4),
           )
@@ -528,7 +528,7 @@ class _HomeTabState extends State<HomeTab> {
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey[500],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 11,
               fontWeight: FontWeight.w500,
             ),
@@ -551,16 +551,16 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: Colors.black.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.18 : 0.02),
             blurRadius: 8,
             offset: const Offset(0, 4),
           )
         ],
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.7)),
       ),
       child: Row(
         children: [
@@ -579,15 +579,15 @@ class _HomeTabState extends State<HomeTab> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
-                      color: Colors.black87),
+                      color: Theme.of(context).colorScheme.onSurface),
                 ),
                 const SizedBox(height: 3),
                 Text(
                   subtitle,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
                 ),
               ],
             ),

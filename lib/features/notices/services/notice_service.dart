@@ -15,7 +15,7 @@ class NoticeService {
       print("GET HOSTEL NOTICES STATUS => ${res.statusCode}");
       print("GET HOSTEL NOTICES BODY => ${res.body}");
 
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200){
         final List data = jsonDecode(res.body);
         final notices = data.map((e) => NoticeModel.fromJson(e)).toList();
         // If API returns an empty list, let's also fallback to mock notices

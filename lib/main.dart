@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import 'package:rentvyn_tenant/features/language/cubit/language_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:rentvyn_tenant/features/notices/cubit/notice_cubit.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_provider.dart';
 import 'core/constants/app_constants.dart';
 import 'core/routes/app_routes.dart';
 
@@ -30,53 +32,44 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginCubit>(
-          create: (_) => LoginCubit(),
-        ),
-
-        BlocProvider<TicketsCubit>(
-          create: (_) => TicketsCubit(),
-        ),
-        BlocProvider<NoticeCubit>(
-          create: (_) => NoticeCubit()..loadNotices(),
-        ),
-        BlocProvider(
-          create: (_) =>
-              LanguageCubit()..loadLanguage(),
-        ),
-        BlocProvider(
-  create: (_) => RoommateCubit(),
-)
+        BlocProvider<LoginCubit>(create: (_) => LoginCubit()),
+        BlocProvider<TicketsCubit>(create: (_) => TicketsCubit()),
+        BlocProvider<NoticeCubit>(create: (_) => NoticeCubit()..loadNotices()),
+        BlocProvider(create: (_) => LanguageCubit()..loadLanguage()),
+        BlocProvider(create: (_) => RoommateCubit()),
       ],
-      child: BlocBuilder<LanguageCubit, LanguageState>(
-        builder: (BuildContext context, state) {  
-            print(
-      "MaterialApp Locale => ${state.locale.languageCode}",
-    );
-        return MaterialApp(
-           locale: state.locale,
-
-          title: AppConstants.appName,
-               localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-        
-          supportedLocales:  [
-            Locale('en'),
-            Locale('te'),
-            Locale('hi'),
-          ],
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
-          initialRoute: AppRoutes.splash,
-          onGenerateRoute: AppRoutes.generateRoute,
-          debugShowCheckedModeBanner: false,
-        );
-  }),
+      child: ChangeNotifierProvider(
+        create: (_) => ThemeProvider(),
+        child: Consumer<ThemeProvider>(
+          builder: (context, themeProvider, _) {
+            return BlocBuilder<LanguageCubit, LanguageState>(
+              builder: (BuildContext context, state) {
+                return MaterialApp(
+                  locale: state.locale,
+                  title: AppConstants.appName,
+                  localizationsDelegates: [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en'),
+                    Locale('te'),
+                    Locale('hi'),
+                  ],
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: themeProvider.themeMode,
+                  initialRoute: AppRoutes.splash,
+                  onGenerateRoute: AppRoutes.generateRoute,
+                  debugShowCheckedModeBanner: false,
+                );
+              },
+            );
+          },
+        ),
+      ),
     );
   }
 }

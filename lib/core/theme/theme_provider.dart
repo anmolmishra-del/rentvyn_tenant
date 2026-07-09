@@ -1,33 +1,36 @@
-// import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// class ThemeProvider extends ChangeNotifier {
-//   ThemeMode _themeMode = ThemeMode.light;
+class ThemeProvider extends ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.light;
 
-//   ThemeMode get themeMode => _themeMode;
+  ThemeMode get themeMode => _themeMode;
 
-//   bool get isDarkMode => _themeMode == ThemeMode.dark;
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
 
-//   ThemeProvider() {
-//     loadTheme();
-//   }
+  ThemeProvider() {
+    loadTheme();
+  }
 
-//   Future<void> toggleTheme(bool isDark) async {
-//     _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+  Future<void> toggleTheme(bool isDark) async {
+    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
 
-//     final prefs = await SharedPreferences.getInstance();
-//     await prefs.setBool('isDarkMode', isDark);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', isDark);
 
-//     notifyListeners();
-//   }
+    notifyListeners();
+  }
 
-//   Future<void> loadTheme() async {
-//     final prefs = await SharedPreferences.getInstance();
+  Future<void> loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
 
-//     bool isDark = prefs.getBool('isDarkMode') ?? false;
+    final isDark = prefs.getBool('isDarkMode');
+    if (isDark == null) {
+      _themeMode = ThemeMode.light;
+    } else {
+      _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    }
 
-//     _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
-
-//     notifyListeners();
-//   }
-// }
+    notifyListeners();
+  }
+}

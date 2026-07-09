@@ -7,23 +7,21 @@ class ThemePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<ThemeProvider>(context);
+    final provider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Appearance"),
+        title: const Text('Appearance'),
       ),
-      
       body: ListView(
         children: [
-          // SwitchListTile(
-          //   secondary: const Icon(Icons.dark_mode),
-          //   title: const Text("Dark Mode"),
-          //   subtitle: const Text("Enable dark appearance"),
-          //   value: provider.isDarkMode,
-          //   onChanged: provider.toggleTheme,
-          // ),
-
+          SwitchListTile(
+            secondary: const Icon(Icons.dark_mode),
+            title: const Text('Dark Mode'),
+            subtitle: const Text('Enable dark appearance'),
+            value: provider.isDarkMode,
+            onChanged: provider.toggleTheme,
+          ),
         ],
       ),
     );

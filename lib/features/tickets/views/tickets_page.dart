@@ -70,6 +70,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
 
   void _showCategorySelectionSheet(BuildContext context, TicketsState state) {
     final language = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -100,7 +101,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
-                      color: Colors.grey[800],
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -120,19 +121,19 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: isSelected ? catColor.withOpacity(0.3) : Colors.transparent,
+                            color: isSelected ? catColor.withValues(alpha: 0.3) : theme.dividerColor.withValues(alpha: 0.5),
                             width: 1.5,
                           ),
                         ),
                         child: Material(
-                          color: isSelected ? catColor.withOpacity(0.04) : Colors.transparent,
+                          color: isSelected ? catColor.withValues(alpha: 0.04) : theme.cardColor,
                           borderRadius: BorderRadius.circular(16),
                           clipBehavior: Clip.antiAlias,
                           child: ListTile(
                             leading: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: isSelected ? catColor.withOpacity(0.12) : Colors.grey[100],
+                                color: isSelected ? catColor.withValues(alpha: 0.12) : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(catIcon, color: isSelected ? catColor : Colors.grey[600], size: 20),
@@ -141,7 +142,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
                               type.name,
                               style: TextStyle(
                                 fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                                color: isSelected ? catColor : Colors.grey[800],
+                                color: isSelected ? catColor : theme.colorScheme.onSurface,
                               ),
                             ),
                             subtitle: type.description.isNotEmpty ? Text(type.description) : null,
@@ -169,6 +170,7 @@ class _RaiseComplaintPageState extends State<RaiseComplaintPage> {
   @override
   Widget build(BuildContext context) {
       final language = AppLocalizations.of(context)!;
+      final theme = Theme.of(context);
     return BlocListener<TicketsCubit, TicketsState>(
       listener: (context, state) {
         if (state.error != null && state.error!.isNotEmpty) {
@@ -196,7 +198,7 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFFAF9F6),
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
           title:  Text(
             // "Raise Complaint",
@@ -207,11 +209,11 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
               letterSpacing: -0.5,
             ),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: theme.colorScheme.onSurface, size: 20),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -238,9 +240,9 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.06),
+                      color: AppColors.primary.withValues(alpha: 0.06),
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: AppColors.primary.withOpacity(0.1), width: 1),
+                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.1), width: 1),
                     ),
                     child: Row(
                       children: [
@@ -251,7 +253,7 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                             language.complaintFormInfo,
                             // "Fill out this form to submit your issue. Our management team will check it and update the status.",
                             style: TextStyle(
-                              color: AppColors.primary.withOpacity(0.85),
+                              color: AppColors.primary.withValues(alpha: 0.85),
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               height: 1.4,
@@ -279,9 +281,9 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                     Container(
                       height: 60,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.cardColor,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade200),
+                        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
                       ),
                       child: const Center(
                         child: SizedBox(
@@ -298,9 +300,9 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: theme.cardColor,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.grey.shade200, width: 1.5),
+                          border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7), width: 1.5),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.01),
@@ -314,7 +316,7 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: getCategoryColor(selectedType!.name).withOpacity(0.08),
+                                color: getCategoryColor(selectedType!.name).withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Icon(
@@ -330,10 +332,10 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                                 children: [
                                   Text(
                                     selectedType.name,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
-                                      color: Color(0xFF1E293B),
+                                      color: theme.colorScheme.onSurface,
                                     ),
                                   ),
                                   if (selectedType.description.isNotEmpty)
@@ -345,14 +347,14 @@ content: Text(language.complaintSubmittedSuccessfully)            ),
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors.grey[500],
+                                          color: theme.colorScheme.onSurfaceVariant,
                                         ),
                                       ),
                                     ),
                                 ],
                               ),
                             ),
-                            Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey[400], size: 24),
+                            Icon(Icons.keyboard_arrow_down_rounded, color: theme.colorScheme.onSurfaceVariant, size: 24),
                           ],
                         ),
                       ),
@@ -420,15 +422,15 @@ _buildPriorityChip(
                     controller: descriptionController,
                     maxLines: 6,
                     maxLength: 300,
-                    style: const TextStyle(fontSize: 14, color: Color(0xFF1E293B)),
+                    style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
                     decoration: InputDecoration(
                       hintText: language.descriptionHint,
                       // hintText: "Briefly explain the issue (e.g. WiFi not working since morning, leaking faucet in washroom...)",
-                      hintStyle: TextStyle(color: Colors.grey[400], fontSize: 13),
-                      fillColor: Colors.white,
+                      hintStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13),
+                      fillColor: theme.cardColor,
                       filled: true,
                       contentPadding: const EdgeInsets.all(16),
-                      counterStyle: TextStyle(color: Colors.grey[500], fontSize: 11),
+                      counterStyle: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 11),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
                         borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
@@ -453,9 +455,9 @@ _buildPriorityChip(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        disabledBackgroundColor: AppColors.primary.withOpacity(0.6),
+                        disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.6),
                         elevation: 2,
-                        shadowColor: AppColors.primary.withOpacity(0.4),
+                        shadowColor: AppColors.primary.withValues(alpha: 0.4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -511,6 +513,7 @@ content: Text(language.pleaseDescribeIssue),                                    
   }
 
   Widget _buildPriorityChip(String value, String label, Color color, String currentValue) {
+    final theme = Theme.of(context);
     final isSelected = currentValue == value;
 
     return Expanded(
@@ -522,10 +525,10 @@ content: Text(language.pleaseDescribeIssue),                                    
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? color.withOpacity(0.07) : Colors.white,
+            color: isSelected ? color.withValues(alpha: 0.07) : theme.cardColor,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: isSelected ? color : Colors.grey.shade200,
+              color: isSelected ? color : theme.dividerColor.withValues(alpha: 0.7),
               width: isSelected ? 2 : 1.5,
             ),
           ),
@@ -544,7 +547,7 @@ content: Text(language.pleaseDescribeIssue),                                    
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? color : Colors.grey[600],
+                  color: isSelected ? color : theme.colorScheme.onSurfaceVariant,
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                   fontSize: 13,
                 ),

@@ -10,17 +10,17 @@ class AccountsTab extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC), // Premium off-white fintech surface
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'My Accounts',
           style: TextStyle(
             fontWeight: FontWeight.w900,
             letterSpacing: -0.5,
-            color: Colors.black87,
+            color: theme.colorScheme.onSurface,
           ),
         ),
-        backgroundColor: const Color(0xFFF8FAFC),
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
@@ -34,16 +34,16 @@ class AccountsTab extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.18 : 0.03),
                     blurRadius: 15,
                     offset: const Offset(0, 6),
                   )
                 ],
-                border: Border.all(color: const Color(0xFFF1F5F9)),
+                border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
               ),
               child: Row(
                 children: [
@@ -63,20 +63,20 @@ class AccountsTab extends StatelessWidget {
                         Text(
                           'CASHBACK BALANCE',
                           style: TextStyle(
-                            color: Colors.grey[500], 
-                            fontSize: 11, 
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1.2,
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
+                        Text(
                           '₹350.00',
                           style: TextStyle(
-                            fontSize: 28, 
+                            fontSize: 28,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.5,
-                            color: Colors.black87,
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
                       ],
@@ -131,11 +131,11 @@ class AccountsTab extends StatelessWidget {
             const SizedBox(height: 12),
             Column(
               children: [
-                _buildDueItem('Monthly Room Rent', '₹4,500.00', 'Due in 20 days', true),
+                _buildDueItem(context, 'Monthly Room Rent', '₹4,500.00', 'Due in 20 days', true),
                 const SizedBox(height: 12),
-                _buildDueItem('Electricity Bill', '₹650.00', 'Paid on Jun 05, 2026', false),
+                _buildDueItem(context, 'Electricity Bill', '₹650.00', 'Paid on Jun 05, 2026', false),
                 const SizedBox(height: 12),
-                _buildDueItem('Maintenance Fee', '₹1,000.00', 'Paid on Jun 05, 2026', false),
+                _buildDueItem(context, 'Maintenance Fee', '₹1,000.00', 'Paid on Jun 05, 2026', false),
               ],
             ),
             const SizedBox(height: 32),
@@ -153,24 +153,24 @@ class AccountsTab extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
+                    color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.18 : 0.02),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
                 ],
-                border: Border.all(color: const Color(0xFFF1F5F9)),
+                border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
               ),
               child: Column(
                 children: [
-                  _buildExpenseBar('Room Rent', 0.75, '₹14,500', AppColors.primary),
+                  _buildExpenseBar(context, 'Room Rent', 0.75, '₹14,500', AppColors.primary),
                   const SizedBox(height: 20),
-                  _buildExpenseBar('Food & Meals', 0.15, '₹3,000', AppColors.secondary),
+                  _buildExpenseBar(context, 'Food & Meals', 0.15, '₹3,000', AppColors.secondary),
                   const SizedBox(height: 20),
-                  _buildExpenseBar('Amenities & Electricity', 0.10, '₹1,650', Colors.teal),
+                  _buildExpenseBar(context, 'Amenities & Electricity', 0.10, '₹1,650', Colors.teal),
                 ],
               ),
             ),
@@ -181,6 +181,8 @@ class AccountsTab extends StatelessWidget {
   }
 
   Widget _buildScratchCard(BuildContext context, String title, String subtitle, String value, bool isUnlocked) {
+    final theme = Theme.of(context);
+
     return Expanded(
       child: Container(
         height: 125,
@@ -211,15 +213,15 @@ class AccountsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title, 
+                  title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  subtitle, 
-                  style: TextStyle(fontSize: 10, color: isUnlocked ? Colors.amber[900] : Colors.grey[500]),
+                  subtitle,
+                  style: TextStyle(fontSize: 10, color: isUnlocked ? Colors.amber[900] : theme.colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -238,7 +240,7 @@ class AccountsTab extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: isUnlocked ? Colors.amber.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+                    color: isUnlocked ? Colors.amber.withValues(alpha: 0.2) : Colors.grey.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -255,20 +257,22 @@ class AccountsTab extends StatelessWidget {
     );
   }
 
-  Widget _buildDueItem(String title, String amount, String status, bool isOutstanding) {
+  Widget _buildDueItem(BuildContext context, String title, String amount, String status, bool isOutstanding) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.015),
+            color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.18 : 0.015),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
         ],
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
       ),
       child: Row(
         children: [
@@ -286,12 +290,12 @@ class AccountsTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87)),
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: theme.colorScheme.onSurface)),
                 const SizedBox(height: 4),
                 Text(
                   status, 
                   style: TextStyle(
-                    color: isOutstanding ? const Color(0xFFEA580C) : Colors.grey[500],
+                    color: isOutstanding ? const Color(0xFFEA580C) : theme.colorScheme.onSurfaceVariant,
                     fontSize: 12,
                     fontWeight: isOutstanding ? FontWeight.w500 : FontWeight.normal,
                   ),
@@ -304,7 +308,7 @@ class AccountsTab extends StatelessWidget {
             children: [
               Text(
                 amount, 
-                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: Colors.black87, letterSpacing: -0.3),
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: theme.colorScheme.onSurface, letterSpacing: -0.3),
               ),
               const SizedBox(height: 6),
               Container(
@@ -329,15 +333,17 @@ class AccountsTab extends StatelessWidget {
     );
   }
 
-  Widget _buildExpenseBar(String label, double percentage, String amount, Color color) {
+  Widget _buildExpenseBar(BuildContext context, String label, double percentage, String amount, Color color) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black87)),
-            Text(amount, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: Colors.black87)),
+            Text(label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: theme.colorScheme.onSurface)),
+            Text(amount, style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, color: theme.colorScheme.onSurface)),
           ],
         ),
         const SizedBox(height: 8),

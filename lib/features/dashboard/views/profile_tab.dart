@@ -6,7 +6,6 @@ import 'package:rentvyn_tenant/core/theme/theme_provider.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/agreement_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/verification_details_page.dart';
-import 'package:rentvyn_tenant/features/dashboard/views/roommate_details_page.dart';
 import 'package:rentvyn_tenant/features/language/view/language_page.dart';
 import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
 import 'package:rentvyn_tenant/l10n/app_localizations.dart';
@@ -114,14 +113,16 @@ backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgrou
         ? 'T'
         : name.trim().split(' ').map((e) => e[0].toUpperCase()).take(2).join();
 
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: Colors.black.withValues(alpha: theme.brightness == Brightness.dark ? 0.2 : 0.04),
             blurRadius: 16,
             offset: const Offset(0, 8),
           )
@@ -186,14 +187,14 @@ backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgrou
           const SizedBox(height: 16),
           Text(
             name,
-            style: const TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+            style: TextStyle(
+                fontSize: 22, fontWeight: FontWeight.bold, color: theme.colorScheme.onSurface),
           ),
           if (email.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
               email,
-              style: TextStyle(color: Colors.grey[600], fontSize: 13),
+              style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13),
             ),
           ],
           const SizedBox(height: 12),
@@ -325,15 +326,16 @@ backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgrou
     );
   }
 
-  // ── Navigation menu cards ───────────────────────────────────────────────────
   Widget _buildMenuOptionsCard() {
       final language = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFF1F1F1)),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.01),
@@ -396,48 +398,48 @@ subtitle: language.languageSubtitle,
 // ),
 const Divider(height: 1),
 
-// Consumer<ThemeProvider>(
-//   builder: (context, provider, child) {
-//     return ListTile(
-//       contentPadding:
-//           const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+Consumer<ThemeProvider>(
+  builder: (context, provider, child) {
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
 
-//       leading: Container(
-//         padding: const EdgeInsets.all(12),
-//         decoration: BoxDecoration(
-//           color: AppColors.primary.withValues(alpha: 0.06),
-//           borderRadius: BorderRadius.circular(14),
-//         ),
-//         child: const Icon(
-//           Icons.dark_mode_rounded,
-//           color: AppColors.primary,
-//           size: 22,
-//         ),
-//       ),
+      leading: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppColors.primary.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: const Icon(
+          Icons.dark_mode_rounded,
+          color: AppColors.primary,
+          size: 22,
+        ),
+      ),
 
-//       title: const Text(
-//         "Appearance",
-//         style: TextStyle(
-//           fontWeight: FontWeight.bold,
-//           fontSize: 15,
-//         ),
-//       ),
+      title: const Text(
+        "Appearance",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      ),
 
-//       subtitle: Text(
-//         provider.isDarkMode ? "Dark Mode" : "Light Mode",
-//         style: TextStyle(
-//           color: Colors.grey,
-//           fontSize: 12,
-//         ),
-//       ),
+      subtitle: Text(
+        provider.isDarkMode ? "Dark Mode" : "Light Mode",
+        style: TextStyle(
+          color: Colors.grey,
+          fontSize: 12,
+        ),
+      ),
 
-//       trailing: Switch(
-//         value: provider.isDarkMode,
-//         onChanged: provider.toggleTheme,
-//       ),
-//     );
-//   },
-// ),
+      trailing: Switch(
+        value: provider.isDarkMode,
+        onChanged: provider.toggleTheme,
+      ),
+    );
+  },
+),
         ],
       ),
     );
@@ -449,12 +451,14 @@ const Divider(height: 1),
     required String title,
     required List<Widget> children,
   }) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFF1F1F1)),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.01),
@@ -479,10 +483,10 @@ const Divider(height: 1),
               const SizedBox(width: 12),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: Colors.black87),
+                    color: theme.colorScheme.onSurface),
               ),
             ],
           ),
@@ -500,7 +504,7 @@ const Divider(height: 1),
       children: [
         Text(label,
             style: TextStyle(
-                color: Colors.grey[500],
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 13,
                 fontWeight: FontWeight.w500)),
         const SizedBox(width: 12),
@@ -510,7 +514,7 @@ const Divider(height: 1),
             textAlign: TextAlign.end,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 13),
           ),
         ),
