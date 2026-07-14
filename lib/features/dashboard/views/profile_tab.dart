@@ -51,12 +51,11 @@ class _ProfileTabState extends State<ProfileTab> {
   Widget build(BuildContext context) {
       final language = AppLocalizations.of(context)!;
     return Scaffold(
-backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title:  Text(language.myProfile,
             style: TextStyle(fontWeight: FontWeight.bold, )),
-        // backgroundColor: Colors.white,
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         actions: [
@@ -338,7 +337,7 @@ backgroundColor: Theme.of(context).appBarTheme.backgroundColor,      // backgrou
         border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.01),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           )
@@ -461,7 +460,7 @@ Consumer<ThemeProvider>(
         border: Border.all(color: theme.dividerColor.withValues(alpha: 0.7)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.01),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           )

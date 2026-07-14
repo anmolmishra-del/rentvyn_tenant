@@ -259,37 +259,27 @@ class _AnimatedRentvynTextState extends State<AnimatedRentvynText>
           animation: _controller,
           builder: (context, child) {
             final val = _controller.value;
-            final pos = (val * 1.5) - 0.25;
-
-            List<Color> colors = [];
-            List<double> stops = [];
-
-            for (int i = 0; i <= 100; i++) {
-              double x = i / 100.0;
-              stops.add(x);
-
-              double dist = (x - pos).abs();
-
-              if (dist < widget.sweepWidth) {
-                double fadeRatio = widget.sweepWidth + 0.005;
-                double t = 1.0 - (dist / fadeRatio).clamp(0.0, 1.0);
-                t = Curves.easeOut.transform(t);
-                colors.add(
-                  Color.lerp(widget.baseColor, widget.shineColor, t)!,
-                );
-              } else {
-                colors.add(widget.baseColor);
-              }
-            }
+            final double pos = -1.5 + (val * 3.0); // Smooth sweep offset from left to right
 
             return ShaderMask(
               shaderCallback: (bounds) {
                 return LinearGradient(
-                  colors: colors,
-                  stops: stops,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  transform: GradientRotation(widget.sweepAngle),
+                  colors: [
+                    widget.baseColor,
+                    widget.baseColor,
+                    widget.shineColor,
+                    widget.baseColor,
+                    widget.baseColor,
+                  ],
+                  stops: const [
+                    0.0,
+                    0.35,
+                    0.5,
+                    0.65,
+                    1.0,
+                  ],
+                  begin: Alignment(pos - 0.5, -0.2),
+                  end: Alignment(pos + 0.5, 0.2),
                 ).createShader(bounds);
               },
               blendMode: BlendMode.srcIn,

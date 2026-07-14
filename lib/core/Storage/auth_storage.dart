@@ -57,5 +57,8 @@ class AuthStorage {
     await prefs.clear();
   }
 
-  static Object? getHostelId() {}
+  static Future<int?> getHostelId() async {
+    final owner = await getOwner();
+    return owner?.hostelId;
+  }
 }
