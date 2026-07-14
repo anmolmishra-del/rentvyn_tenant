@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
+import 'package:rentvyn_tenant/features/tickets/views/ticket_raise.dart';
 import 'home_tab.dart';
 import 'accounts_tab.dart';
-import 'tickets_tab.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 import 'profile_tab.dart';
 
 class DashboardView extends StatefulWidget {
@@ -26,57 +30,64 @@ class _DashboardViewState extends State<DashboardView> {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF9F6),
+      backgroundColor: Colors.white,
       body: IndexedStack(
         index: _selectedIndex,
         children: tabs,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.06),
-              blurRadius: 16,
-              offset: const Offset(0, -4),
-            )
-          ],
+     bottomNavigationBar: SafeArea(
+  top: false,
+  child: SizedBox(
+    height: 80,
+    child: ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 30,
+          sigmaY: 20,
         ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
+        child: CurvedNavigationBar(
+          index: _selectedIndex,
+          height: 68,
+          backgroundColor: Colors.transparent,
+          color: AppColors.primary,
+          buttonBackgroundColor: AppColors.primary,
+          animationDuration: const Duration(milliseconds: 350),
+          items: [
+            Icon(
+              Icons.home_rounded,
+              size: 26,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.account_balance_wallet_rounded,
+              size: 26,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.confirmation_number_rounded,
+              size: 26,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.person_rounded,
+              size: 26,
+              color: Colors.white,
+            ),
+          ],
+          onTap: (index) async {
+            await Future.delayed(
+              const Duration(milliseconds: 350),
+            );
+
             setState(() {
               _selectedIndex = index;
             });
           },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: Colors.grey[400],
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          unselectedLabelStyle: const TextStyle(fontSize: 11),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, size: 24),
-              activeIcon: Icon(Icons.home_rounded, size: 26),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet_rounded, size: 24),
-              activeIcon: Icon(Icons.account_balance_wallet_rounded, size: 26),
-              label: 'Accounts',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number_rounded, size: 24),
-              activeIcon: Icon(Icons.confirmation_number_rounded, size: 26),
-              label: 'Tickets',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded, size: 24),
-              activeIcon: Icon(Icons.person_rounded, size: 26),
-              label: 'Profile',
-            ),
-          ],
         ),
+      ),
+    ),
+  ),
+
       ),
     );
   }

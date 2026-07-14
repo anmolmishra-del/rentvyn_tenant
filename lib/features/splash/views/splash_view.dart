@@ -117,37 +117,39 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
                 alignment: Alignment.center,
                 children: [
                   // Logo with initial scale-in and final zoom-out
-                  AnimatedBuilder(
-                    animation: _animationController,
-                    builder: (BuildContext context, Widget? child) {
-                      return Transform.scale(
-                        scale: _animation.value,
-                        child: child,
-                      );
-                    },
-                    child: AnimatedScale(
-                      duration: const Duration(milliseconds: 500),
-                      scale: _scaleLogo ? 12 : 0.9,
-                      child: Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.primary,
-                              AppColors.secondary,
-                            ],
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.home_work_rounded,
-                          size: 72,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-
+                 AnimatedBuilder(
+  animation: _animationController,
+  builder: (context, child) {
+    return Transform.scale(
+      scale: _animation.value,
+      child: child,
+    );
+  },
+  child: AnimatedScale(
+    duration: const Duration(milliseconds: 500),
+    scale: _scaleLogo ? 8 : 1,
+    child: Container(
+      width: 120,
+      height: 120,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Image.asset(
+        'assets/mainlogo.png',
+        fit: BoxFit.contain,
+      ),
+    ),
+  ),
+),
                   // Brand Name: Rentvyn
                   Padding(
                     padding: const EdgeInsets.only(top: 180),
@@ -257,37 +259,27 @@ class _AnimatedRentvynTextState extends State<AnimatedRentvynText>
           animation: _controller,
           builder: (context, child) {
             final val = _controller.value;
-            final pos = (val * 1.5) - 0.25;
-
-            List<Color> colors = [];
-            List<double> stops = [];
-
-            for (int i = 0; i <= 100; i++) {
-              double x = i / 100.0;
-              stops.add(x);
-
-              double dist = (x - pos).abs();
-
-              if (dist < widget.sweepWidth) {
-                double fadeRatio = widget.sweepWidth + 0.005;
-                double t = 1.0 - (dist / fadeRatio).clamp(0.0, 1.0);
-                t = Curves.easeOut.transform(t);
-                colors.add(
-                  Color.lerp(widget.baseColor, widget.shineColor, t)!,
-                );
-              } else {
-                colors.add(widget.baseColor);
-              }
-            }
+            final double pos = -1.5 + (val * 3.0); // Smooth sweep offset from left to right
 
             return ShaderMask(
               shaderCallback: (bounds) {
                 return LinearGradient(
-                  colors: colors,
-                  stops: stops,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  transform: GradientRotation(widget.sweepAngle),
+                  colors: [
+                    widget.baseColor,
+                    widget.baseColor,
+                    widget.shineColor,
+                    widget.baseColor,
+                    widget.baseColor,
+                  ],
+                  stops: const [
+                    0.0,
+                    0.35,
+                    0.5,
+                    0.65,
+                    1.0,
+                  ],
+                  begin: Alignment(pos - 0.5, -0.2),
+                  end: Alignment(pos + 0.5, 0.2),
                 ).createShader(bounds);
               },
               blendMode: BlendMode.srcIn,

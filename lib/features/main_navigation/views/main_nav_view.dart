@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../auth/views/otp_login_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rentvyn_tenant/features/auth/views/login_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:rentvyn_tenant/features/auth/cubit/login_cubit.dart';
 import '../../dashboard/views/dashboard_view.dart';
 import '../../explore/views/explore_pgs_view.dart';
 import '../../../core/constants/app_colors.dart';
+import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
+import 'package:rentvyn_tenant/features/auth/cubit/auth_service.dart';
 
 class MainNavView extends StatefulWidget {
   const MainNavView({super.key});
@@ -14,12 +19,24 @@ class MainNavView extends StatefulWidget {
 class _MainNavViewState extends State<MainNavView> {
   int _selectedTab = 0; // 0: My PGs (Light Blue), 1: Explore (Light Violet)
   bool _isLoggedIn = false;
+  bool _isLoading = true;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedTab);
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final isLoggedIn = await AuthStorage.isLoggedIn();
+    if (mounted) {
+      setState(() {
+        _isLoggedIn = isLoggedIn;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -31,15 +48,47 @@ class _MainNavViewState extends State<MainNavView> {
   void _onLoginSuccess() {
     setState(() {
       _isLoggedIn = true;
-    });
-  }
-
-  void _onLogout() {
-    setState(() {
-      _isLoggedIn = false;
       _selectedTab = 0;
     });
     _pageController.jumpToPage(0);
+  }
+
+  Future<void> _onLogout() async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(color: AppColors.primary),
+      ),
+    );
+
+    // Call API to logout, passing the FCM token so the backend can remove it
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      await AuthService.logout(fcmToken: fcmToken);
+    } catch (e) {
+      print("Error fetching FCM token on logout: $e");
+      await AuthService.logout(); // Fallback without token
+    }
+
+    // Clear local storage
+    await AuthStorage.logout();
+
+    // Pop the loading dialog
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+
+    // Reset LoginCubit so user sees the phone entry screen (not OTP screen)
+    if (mounted) {
+      context.read<LoginCubit>().reset();
+      setState(() {
+        _isLoggedIn = false;
+        _selectedTab = 0;
+      });
+      _pageController.jumpToPage(0);
+    }
   }
 
   void _navigateToTab(int index) {
@@ -55,14 +104,21 @@ class _MainNavViewState extends State<MainNavView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
+      );
+    }
+
     final bool showNavBar = !_isLoggedIn;
 
-    // Curated premium LIGHT pastel colors and deep foreground colors from AppColors
-    final Color portalLightBg = AppColors.primary.withOpacity(0.08);
-    const Color portalDarkFg = AppColors.primary;
-    
-    final Color exploreLightBg = AppColors.secondary.withOpacity(0.08);
-    const Color exploreDarkFg = AppColors.secondary;
+    // Curated nav pill colors for better contrast and consistency
+    const Color portalSelectedFg = AppColors.primary;
+
+    const Color exploreSelectedFg = AppColors.primary;
 
     return Scaffold(
       extendBody: showNavBar,
@@ -73,7 +129,7 @@ class _MainNavViewState extends State<MainNavView> {
           // Page 0: My PGs (Login or Dashboard)
           _isLoggedIn
               ? DashboardView(onLogout: _onLogout)
-              : OtpLoginView(onLoginSuccess: _onLoginSuccess),
+              : LoginScreen(onLoginSuccess: _onLoginSuccess),
           
           // Page 1: Explore PGs
           const ExplorePgsView(isNested: true),
@@ -83,127 +139,143 @@ class _MainNavViewState extends State<MainNavView> {
           ? SafeArea(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // --- MY PGs CONTROL (Left Side) ---
-                    _selectedTab == 0
-                        ? Expanded(
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 350),
-                              height: 70,
-                              margin: const EdgeInsets.only(right: 12),
-                              decoration: BoxDecoration(
-                                color: portalLightBg,
-                                borderRadius: BorderRadius.circular(35),
-                                border: Border.all(color: portalDarkFg.withOpacity(0.15), width: 1.5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: portalDarkFg.withOpacity(0.06),
-                                    blurRadius: 16,
-                                    offset: const Offset(0, 6),
-                                  )
-                                ],
-                              ),
-                              child: const Center(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.home_work_rounded, color: portalDarkFg, size: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'My PGs',
-                                      style: TextStyle(
-                                        color: portalDarkFg,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(45),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 18,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // --- MY PGs CONTROL (Left Side) ---
+                        _selectedTab == 0
+                            ? Expanded(
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 350),
+                                  height: 70,
+                                  margin: const EdgeInsets.only(right: 12),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(35),
+                                    border: Border.all(color: portalSelectedFg.withOpacity(0.18), width: 1.5),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: portalSelectedFg.withOpacity(0.12),
+                                    //     blurRadius: 18,
+                                    //     offset: const Offset(0, 6),
+                                    //   )
+                                    // ],
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.home_work_rounded, color: Colors.white, size: 24),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'My PGs',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () => _navigateToTab(0),
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: portalSelectedFg.withOpacity(0.12), width: 1),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: portalSelectedFg.withOpacity(0.05),
+                                    //     blurRadius: 12,
+                                    //     offset: const Offset(0, 4),
+                                    //   )
+                                    // ],
+                                  ),
+                                  child: Icon(Icons.home_work_rounded, color: Colors.white, size: 26),
                                 ),
                               ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () => _navigateToTab(0),
-                            child: Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: portalLightBg.withOpacity(0.8),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: portalDarkFg.withOpacity(0.08), width: 1),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: portalDarkFg.withOpacity(0.04),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
-                                  )
-                                ],
-                              ),
-                              child: const Icon(Icons.home_work_rounded, color: portalDarkFg, size: 26),
-                            ),
-                          ),
 
-                    // --- EXPLORE CONTROL (Right Side) ---
-                    _selectedTab == 1
-                        ? Expanded(
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 350),
-                              height: 70,
-                              margin: const EdgeInsets.only(left: 12),
-                              decoration: BoxDecoration(
-                                color: exploreLightBg,
-                                borderRadius: BorderRadius.circular(35),
-                                border: Border.all(color: exploreDarkFg.withOpacity(0.15), width: 1.5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: exploreDarkFg.withOpacity(0.06),
-                                    blurRadius: 16,
-                                    offset: const Offset(0, 6),
-                                  )
-                                ],
-                              ),
-                              child: const Center(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.explore_rounded, color: exploreDarkFg, size: 24),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Explore',
-                                      style: TextStyle(
-                                        color: exploreDarkFg,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
+                        // --- EXPLORE CONTROL (Right Side) ---
+                        _selectedTab == 1
+                            ? Expanded(
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 350),
+                                  height: 70,
+                                  margin: const EdgeInsets.only(left: 12),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(35),
+                                    border: Border.all(color: exploreSelectedFg.withOpacity(0.18), width: 1.5),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     // color: exploreSelectedFg.withOpacity(0.12),
+                                    //     blurRadius: 18,
+                                    //     offset: const Offset(0, 6),
+                                    //   )
+                                    // ],
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.explore_rounded, color: Colors.white, size: 24),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Explore',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () => _navigateToTab(1),
+                                child: Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: exploreSelectedFg.withOpacity(0.12), width: 1),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: exploreSelectedFg.withOpacity(0.05),
+                                    //     blurRadius: 12,
+                                    //     offset: const Offset(0, 4),
+                                    //   )
+                                    // ],
+                                  ),
+                                  child: Icon(Icons.explore_rounded, color: Colors.white, size: 26),
                                 ),
                               ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () => _navigateToTab(1),
-                            child: Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: exploreLightBg.withOpacity(0.8),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: exploreDarkFg.withOpacity(0.08), width: 1),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: exploreDarkFg.withOpacity(0.04),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
-                                  )
-                                ],
-                              ),
-                              child: const Icon(Icons.explore_rounded, color: exploreDarkFg, size: 26),
-                            ),
-                          ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             )
