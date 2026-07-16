@@ -47,8 +47,10 @@ dependencies:
   intl: ^0.20.2
   curved_navigation_bar: ^1.0.6
   provider: ^6.1.5+1
- 
-
+  syncfusion_flutter_signaturepad: ^34.1.31
+  syncfusion_flutter_pdfviewer: ^34.1.31
+  syncfusion_flutter_pdf: ^34.1.31
+  path_provider: ^2.1.5
   
 
 dev_dependencies:

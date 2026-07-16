@@ -90,10 +90,15 @@ static Future<Map<String, dynamic>?> verifyOtp(
     if (res.statusCode == 200) {
       final data =
           jsonDecode(res.body);
-    print("ACCESS TOKEN => ${data["access_token"]}");
-      print("OWNER ID => ${data["owner_id"]}");
-      print("TENANT => ${data["tenant"]}");
-
+   print("RAW RESPONSE => ${res.body}");
+   
+  print("ACCESS TOKEN => ${data["access_token"]}");
+  print("OWNER ID => ${data["owner_id"]}");
+  print("TENANT => ${data["tenant"]}");
+  print("HOSTEL => ${data["tenant"]["hostel"]}");
+  print("HOSTEL NAME => ${data["tenant"]["hostel"]["name"]}");
+print("HOSTEL FROM RESPONSE => ${data["tenant"]["hostel"]}");
+print("HOSTEL NAME => ${data["tenant"]["hostel"]?["name"]}");
       return data;
     }
 

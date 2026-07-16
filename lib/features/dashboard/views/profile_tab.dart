@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/core/theme/theme_provider.dart';
+import 'package:rentvyn_tenant/features/agreement_details_page/view/rental_agremeent_page.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
-import 'package:rentvyn_tenant/features/dashboard/views/agreement_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/verification_details_page.dart';
 import 'package:rentvyn_tenant/features/language/view/language_page.dart';
 import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
@@ -49,6 +49,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
+    print("Rental Agreement URL => ${_owner?.rentalAgreement}");
       final language = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -340,30 +341,84 @@ class _ProfileTabState extends State<ProfileTab> {
             color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Column(
         children: [
-          _buildMenuItem(
-            context,
-            icon: Icons.assignment_outlined,
-            title: language.rentalAgreement,
-subtitle: language.rentalAgreementSubtitle,
-            // title: 'Rental Agreement',
-            // subtitle: 'ID, monthly rent, download PDF',
-            destination: const AgreementDetailsPage(),
-          ),
+//           _buildMenuItem(
+//             context,
+//             icon: Icons.assignment_outlined,
+//             title: language.rentalAgreement,
+// subtitle: language.rentalAgreementSubtitle,
+//             // title: 'Rental Agreement',
+//             // subtitle: 'ID, monthly rent, download PDF',
+//             destination: const AgreementDetailsPage(),
+//           ),
+if (_owner?.isAgreement == false) ...[
+  _buildMenuItem(
+    context,
+    icon: Icons.assignment_outlined,
+    title: language.rentalAgreement,
+    subtitle: language.rentalAgreementSubtitle,
+    // destination: const AgreementDetailsPage(pdfUrl: '',),
+  destination: RentalAgreementPage(
+  tenantId: 56,
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODQ3OTMwMDQsInN1YiI6Ijk5NjYyNjcxNzgiLCJpYXQiOjE3ODIyMDEwMDQsIm93bmVyX2lkIjo2fQ.XXFhgUJy0eNvEtRaVWNkQImtyQHL33H_5WQYzOwtC5g"
+),
+  
+
+
+  ),
+  const Divider(height: 1),
+],
           const Divider(height: 1),
           _buildMenuItem(
             context,
             icon: Icons.gpp_good_outlined,
             title: language.policeVerification,
 subtitle: language.policeVerificationSubtitle,
+ onTap: () {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Text(
+          "Why background verification is necessary?",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Well, we know you're for real. But for security purposes, law of the land requires us to conduct your police verification.\n\n"
+          "With RentVyn, you don't need to go to the Police Station.\n\n"
+          "Just fill all your profile details, and your verification will be processed.",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  },
             // title: 'Police Verification (BG Check)',
             // subtitle: 'e-KYC verification status & details',
             destination: const VerificationDetailsPage(),
           ),
+// if ((_owner?.policeVerification ?? '').isNotEmpty) ...[
+//   _buildMenuItem(
+//     context,
+//     icon: Icons.gpp_good_outlined,
+//     title: language.policeVerification,
+//     subtitle: language.policeVerificationSubtitle,
+//     destination: const VerificationDetailsPage(),
+//   ),
+//   const Divider(height: 1),
+// ],
           const Divider(height: 1),
 _buildMenuItem(
   context,
@@ -527,9 +582,10 @@ Consumer<ThemeProvider>(
     required String title,
     required String subtitle,
     required Widget destination,
+    VoidCallback? onTap,
   }) {
     return InkWell(
-      onTap: () {
+      onTap: onTap ?? () {
         Navigator.push(
           context,
           PageRouteBuilder(

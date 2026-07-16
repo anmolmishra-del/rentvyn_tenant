@@ -59,8 +59,11 @@ class _HomeTabState extends State<HomeTab> {
     final formattedRent = '₹${rent.toStringAsFixed(0)}';
     final formattedDeposit = _owner?.formattedDeposit ?? '—';
     final roomId = _owner?.roomId?.toString() ?? '—';
-    final city = _owner?.city ?? '';
-    final verified = _owner?.identityVerified ?? false;
+    // final city = _owner?.city ?? '';
+final hostelName = _owner?.hostelName ?? '';
+
+print("HOME HOSTEL NAME => $hostelName");
+print("OWNER => ${_owner?.toJson()}");    final verified = _owner?.identityVerified ?? false;
     final active = _owner?.active ?? false;
     final joinedDate=_owner?.joinDate ?? '';
 
@@ -267,9 +270,9 @@ class _HomeTabState extends State<HomeTab> {
                                         // city.isNotEmpty
                                         //     ? city
                                         //     : 'Rentvyn PG',
-                                        city.isNotEmpty
-    ? city
-    : language.rentvynPg,
+                                        hostelName.isNotEmpty
+                                          ? hostelName
+                                          : language.rentvynPg,
                                         style: TextStyle(
                                             color: Colors.white
                                                 .withValues(alpha: 0.9),
