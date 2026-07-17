@@ -25,5 +25,10 @@ static String ownerHostelTenants(int hostelId) =>"$authBase/owner/hostels/$hoste
 static String roomTenants(int roomId) => "$authBase/owner/rooms/$roomId/tenants"; 
 //  static String tenantRoomTenants(int roomId) => "$authBase/tenant/rooms/$roomId/tenants";
 static const String ownerTenants = "$authBase/owner/tenants";
-static String tenantRoomTenants(int roomId) =>"$authBase/tenant/rooms/$roomId/tenants";
+static String tenantRoomTenants(int roomId) => "$authBase/tenant/rooms/$roomId/tenants";
+static String pgContact(int hostelId) => "$authBase/tenant/pg-contact/$hostelId";
+static const String myBills = "$authBase/tenant/MyBills";
+static const String createOrder = "$authBase/owner/bills/create-razorpay-order";
+static const String verifyPayment = "$authBase/owner/bills/verifypayment";
+
 }

@@ -31,6 +31,9 @@ class _MainNavViewState extends State<MainNavView> {
 
   Future<void> _checkLoginStatus() async {
     final isLoggedIn = await AuthStorage.isLoggedIn();
+    if (isLoggedIn && mounted) {
+      await context.read<LoginCubit>().loadUser();
+    }
     if (mounted) {
       setState(() {
         _isLoggedIn = isLoggedIn;

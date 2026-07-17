@@ -84,9 +84,15 @@ class LoginCubit extends Cubit<LoginState> {
 print("FULL VERIFY RESPONSE      ,,,,,,,,,,,,,,, => $res");
       if (res != null) {
         final owner = Owner.fromJson(res);
+        print("FULL RESPONSE => $res");
+print("HOSTEL => ${res["tenant"]["hostel"]}");
+print("HOSTEL NAME FROM API => ${res["tenant"]["hostel"]["name"]}");
+print("HOSTEL NAME FROM MODEL => ${owner.hostelName}");
+print("TENANT JSON => ${owner.toJson()}");
 print("TENANT ID => ${owner.id}");
 print("HOSTEL ID => ${owner.hostelId}");
 print("TENANT JSON => ${owner.toJson()}");
+
         await AuthStorage.saveAuth(owner.accessToken ?? "", owner);
 
         print("Access Token: ${owner.accessToken}");

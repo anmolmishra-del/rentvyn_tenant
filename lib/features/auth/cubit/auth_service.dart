@@ -90,10 +90,15 @@ static Future<Map<String, dynamic>?> verifyOtp(
     if (res.statusCode == 200) {
       final data =
           jsonDecode(res.body);
-    print("ACCESS TOKEN => ${data["access_token"]}");
-      print("OWNER ID => ${data["owner_id"]}");
-      print("TENANT => ${data["tenant"]}");
-
+   print("RAW RESPONSE => ${res.body}");
+   
+  print("ACCESS TOKEN => ${data["access_token"]}");
+  print("OWNER ID => ${data["owner_id"]}");
+  print("TENANT => ${data["tenant"]}");
+  print("HOSTEL => ${data["tenant"]["hostel"]}");
+  print("HOSTEL NAME => ${data["tenant"]["hostel"]["name"]}");
+print("HOSTEL FROM RESPONSE => ${data["tenant"]["hostel"]}");
+print("HOSTEL NAME => ${data["tenant"]["hostel"]?["name"]}");
       return data;
     }
 
@@ -106,6 +111,24 @@ static Future<Map<String, dynamic>?> verifyOtp(
     return null;
   }
 }
+
+  static Future<Map<String, dynamic>?> getPgContact(int hostelId) async {
+    try {
+      final res = await ApiClient.get(
+        ApiUrls.pgContact(hostelId),
+        requireAuth: true,
+      );
+      print("GET PG CONTACT STATUS => ${res.statusCode}");
+      print("GET PG CONTACT BODY => ${res.body}");
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      }
+      return null;
+    } catch (e) {
+      print("Get PG Contact Error: $e");
+      return null;
+    }
+  }
 
   static Future<bool> logout({String? fcmToken}) async {
     try {
@@ -121,6 +144,73 @@ static Future<Map<String, dynamic>?> verifyOtp(
       return false;
     } catch (e) {
       print("Logout Error: $e");
+      return false;
+    }
+  }
+
+  static Future<List<dynamic>?> getMyBills() async {
+    try {
+      final res = await ApiClient.get(
+        ApiUrls.myBills,
+        requireAuth: true,
+      );
+      print("GET MY BILLS STATUS => ${res.statusCode}");
+      print("GET MY BILLS BODY => ${res.body}");
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      }
+      return null;
+    } catch (e) {
+      print("Get My Bills Error: $e");
+      return null;
+    }}
+  static Future<Map<String, dynamic>?> createOrder({required double amount, required int billId}) async {
+    try {
+      final res = await ApiClient.post(
+        ApiUrls.createOrder,
+        body: {
+          "amount": amount.toInt(),
+          "currency": "INR",
+          "bill_id": billId
+        },
+        requireAuth: true,
+      );
+      print("CREATE ORDER STATUS => ${res.statusCode}");
+      print("CREATE ORDER BODY => ${res.body}");
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      }
+      return null;
+    } catch (e) {
+      print("Create Order Error: $e");
+      return null;
+    }
+  }
+  static Future<bool> verifyPayment({
+    required int billId,
+   
+    required String orderId,
+  
+  }) async {
+    try {
+      final res = await ApiClient.post(
+        ApiUrls.verifyPayment,
+        body: {
+          "bill_id": billId,
+         
+          "order_id": orderId,
+        
+        },
+        requireAuth: true,
+      );
+      print("VERIFY PAYMENT STATUS => ${res.statusCode}");
+      print("VERIFY PAYMENT BODY => ${res.body}");
+      if (res.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print("Verify Payment Error: $e");
       return false;
     }
   }

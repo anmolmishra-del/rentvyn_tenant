@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rentvyn_tenant/core/Storage/auth_storage.dart';
+import 'package:rentvyn_tenant/features/auth/cubit/auth_service.dart';
+import 'package:rentvyn_tenant/features/payments/cubit/pg_contact_cubit.dart';
+import 'package:rentvyn_tenant/features/payments/state/pg_contact_state.dart';
 import 'package:rentvyn_tenant/core/constants/app_colors.dart';
 import 'package:rentvyn_tenant/core/theme/theme_provider.dart';
+import 'package:rentvyn_tenant/features/agreement_details_page/view/rental_agremeent_page.dart';
 import 'package:rentvyn_tenant/features/auth/models/owner_model.dart';
-import 'package:rentvyn_tenant/features/dashboard/views/agreement_details_page.dart';
 import 'package:rentvyn_tenant/features/dashboard/views/verification_details_page.dart';
 import 'package:rentvyn_tenant/features/language/view/language_page.dart';
 import 'package:rentvyn_tenant/features/roommate/view/roommate_page.dart';
@@ -34,14 +39,6 @@ class _ProfileTabState extends State<ProfileTab> {
       setState(() {
         _owner = owner;
         _loading = false;
-        //_owner = await AuthStrorage.geOwner();
-             //if(mounted){
-            //setState(()){
-           //_owner = owner;
-          //_loading = false;
-         //  }
-        // }
-       
       });
     }
   }
@@ -80,7 +77,11 @@ class _ProfileTabState extends State<ProfileTab> {
                     const SizedBox(height: 20),
                     _buildPersonalDetailsCard(),
                     const SizedBox(height: 16),
-                    _buildRoomDetailsCard(),
+                    BlocBuilder<PgContactCubit, PgContactState>(
+                      builder: (context, pgState) {
+                        return _buildRoomDetailsCard(pgState);
+                      },
+                    ),
                     const SizedBox(height: 16),
                     _buildEmergencyContactCard(),
                     const SizedBox(height: 16),
@@ -287,23 +288,46 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   // ── Room details ────────────────────────────────────────────────────────────
-  Widget _buildRoomDetailsCard() {
-      final language = AppLocalizations.of(context)!;
+  Widget _buildRoomDetailsCard(PgContactState pgState) {
+    final language = AppLocalizations.of(context)!;
     final joinDate = _formatDate(_owner?.joinDate ?? '');
+
+    final hasContact = pgState.contact != null;
+    final managerName = hasContact ? (pgState.contact!['name'] ?? pgState.contact!['manager_name'] ?? '—') : '—';
+    final managerPhone = hasContact ? (pgState.contact!['phone'] ?? pgState.contact!['manager_phone'] ?? '—') : '—';
+    final managerEmail = hasContact ? (pgState.contact!['email'] ?? pgState.contact!['manager_email'] ?? '—') : '—';
+
     return _buildCard(
       icon: Icons.bed_rounded,
-      // title: 'Room & Rent Details',
       title: language.roomRentDetails,
       children: [
         _row(language.roomNo, _owner?.roomId?.toString() ?? '—'),
         const Divider(height: 24),
-        // _row('Hostel ID', _owner?.hostelId.toString() ?? '—'),
-        // const Divider(height: 24),
         _row(language.monthlyRent, _owner?.formattedRent ?? '—'),
         const Divider(height: 24),
         _row(language.securityDeposit, _owner?.formattedDeposit ?? '—'),
         const Divider(height: 24),
         _row(language.joinDate, joinDate.isNotEmpty ? joinDate : '—'),
+        if (pgState.loading) ...[
+          const Divider(height: 24),
+          const Center(
+            child: SizedBox(
+              height: 16,
+              width: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.primary,
+              ),
+            ),
+          ),
+        ] else if (hasContact) ...[
+          const Divider(height: 24),
+          _rowWithCopy("Manager Name", managerName),
+          const Divider(height: 24),
+          _rowWithCopy("Phone Number", managerPhone.isNotEmpty ? '+91 $managerPhone' : '—'),
+          const Divider(height: 24),
+          _rowWithCopy("Email ID", managerEmail),
+        ],
       ],
     );
   }
@@ -340,30 +364,84 @@ class _ProfileTabState extends State<ProfileTab> {
             color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
-          )
+          ),
         ],
       ),
       child: Column(
         children: [
-          _buildMenuItem(
-            context,
-            icon: Icons.assignment_outlined,
-            title: language.rentalAgreement,
-subtitle: language.rentalAgreementSubtitle,
-            // title: 'Rental Agreement',
-            // subtitle: 'ID, monthly rent, download PDF',
-            destination: const AgreementDetailsPage(),
-          ),
+//           _buildMenuItem(
+//             context,
+//             icon: Icons.assignment_outlined,
+//             title: language.rentalAgreement,
+// subtitle: language.rentalAgreementSubtitle,
+//             // title: 'Rental Agreement',
+//             // subtitle: 'ID, monthly rent, download PDF',
+//             destination: const AgreementDetailsPage(),
+//           ),
+if (_owner?.isAgreement == false) ...[
+  _buildMenuItem(
+    context,
+    icon: Icons.assignment_outlined,
+    title: language.rentalAgreement,
+    subtitle: language.rentalAgreementSubtitle,
+    // destination: const AgreementDetailsPage(pdfUrl: '',),
+  destination: RentalAgreementPage(
+  tenantId: 56,
+  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODQ3OTMwMDQsInN1YiI6Ijk5NjYyNjcxNzgiLCJpYXQiOjE3ODIyMDEwMDQsIm93bmVyX2lkIjo2fQ.XXFhgUJy0eNvEtRaVWNkQImtyQHL33H_5WQYzOwtC5g"
+),
+  
+
+
+  ),
+  const Divider(height: 1),
+],
           const Divider(height: 1),
           _buildMenuItem(
             context,
             icon: Icons.gpp_good_outlined,
             title: language.policeVerification,
 subtitle: language.policeVerificationSubtitle,
+ onTap: () {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Text(
+          "Why background verification is necessary?",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Well, we know you're for real. But for security purposes, law of the land requires us to conduct your police verification.\n\n"
+          "With RentVyn, you don't need to go to the Police Station.\n\n"
+          "Just fill all your profile details, and your verification will be processed.",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  },
             // title: 'Police Verification (BG Check)',
             // subtitle: 'e-KYC verification status & details',
             destination: const VerificationDetailsPage(),
           ),
+// if ((_owner?.policeVerification ?? '').isNotEmpty) ...[
+//   _buildMenuItem(
+//     context,
+//     icon: Icons.gpp_good_outlined,
+//     title: language.policeVerification,
+//     subtitle: language.policeVerificationSubtitle,
+//     destination: const VerificationDetailsPage(),
+//   ),
+//   const Divider(height: 1),
+// ],
           const Divider(height: 1),
 _buildMenuItem(
   context,
@@ -527,9 +605,10 @@ Consumer<ThemeProvider>(
     required String title,
     required String subtitle,
     required Widget destination,
+    VoidCallback? onTap,
   }) {
     return InkWell(
-      onTap: () {
+      onTap: onTap ?? () {
         Navigator.push(
           context,
           PageRouteBuilder(
@@ -595,5 +674,57 @@ Consumer<ThemeProvider>(
     } catch (_) {
       return iso;
     }
+  }
+
+  Widget _rowWithCopy(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 13,
+                fontWeight: FontWeight.w500)),
+        const SizedBox(width: 12),
+        Flexible(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Text(
+                  value.isNotEmpty ? value : '—',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 13),
+                ),
+              ),
+              if (value.isNotEmpty && value != '—') ...[
+                const SizedBox(width: 6),
+                GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: value));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('$label copied to clipboard!'),
+                        duration: const Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.copy_rounded,
+                    size: 14,
+                    color: AppColors.primary.withOpacity(0.6),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

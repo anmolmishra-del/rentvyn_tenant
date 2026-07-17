@@ -4,7 +4,7 @@ class Owner {
   final String? accessToken;
   final String? tokenType;
   final int? expiresIn;
-
+final String hostelName;
   // ── Tenant core ──────────────────────────────────────────────────────────
   final int id;
   final String name;
@@ -15,8 +15,8 @@ class Owner {
   final String gender;
   final bool active;
   final bool identityVerified;
-
-  // ── Room / Hostel ────────────────────────────────────────────────────────
+final bool isAgreement;
+final String policeVerification;  // ── Room / Hostel ────────────────────────────────────────────────────────
   final int hostelId;
   final int? roomId;
   final double rent;
@@ -29,7 +29,7 @@ class Owner {
   final String state;
   final String country;
   final String zipcode;
-
+final String rentalAgreement;
   // ── Emergency contact ────────────────────────────────────────────────────
   final String emergencyContactName;
   final String emergencyContactPhone;
@@ -65,6 +65,7 @@ class Owner {
     this.active = true,
     this.identityVerified = false,
     this.hostelId = 0,
+    this.hostelName = '',
     this.roomId,
     this.rent = 0,
     this.securityDeposit = 0,
@@ -87,6 +88,9 @@ class Owner {
     this.plan,
     this.manager,
     this.ownerId,
+    this.isAgreement = false,
+this.policeVerification = '',
+    this.rentalAgreement = '',
   });
 
   /// Handles both the full verify-otp response (has access_token + tenant)
@@ -95,9 +99,12 @@ class Owner {
     // When coming from API the tenant fields live under "tenant" key;
     // when restored from storage they are flat.
     final t = (json['tenant'] as Map<String, dynamic>?) ?? json;
-
+ print("HOSTEL JSON => ${t['hostel']}");
+  print("HOSTEL NAME => ${t['hostel']?['name']}");
     return Owner(
       // Auth
+      rentalAgreement:
+    t['hostel']?['rental_agreement'] ?? '',
       accessToken: json['access_token'],
       tokenType: json['token_type'],
       expiresIn: json['expires_in'] is int ? json['expires_in'] : null,
@@ -112,9 +119,11 @@ class Owner {
       gender: t['gender'] ?? '',
       active: t['active'] ?? true,
       identityVerified: t['identity_verified'] ?? false,
-
+isAgreement: t['hostel']?['is_agreement'] ?? false,
+policeVerification: t['hostel']?['police_verification'] ?? '',
       // Room / Hostel
       hostelId: (t['hostel_id'] as num?)?.toInt() ?? 0,
+      hostelName: t['hostel']?['name'] ?? '',
       roomId: (t['room_id'] as num?)?.toInt(),
       rent: (t['rent'] as num?)?.toDouble() ?? 0,
       securityDeposit: (t['security_deposit'] as num?)?.toDouble() ?? 0,
@@ -169,7 +178,12 @@ ownerId: (json['owner_id'] as num?)?.toInt(),      address: t['address'] ?? '',
         'active': active,
         'identity_verified': identityVerified,
         'hostel_id': hostelId,
-        'room_id': roomId,
+  'hostel': {
+  'name': hostelName,
+  'is_agreement': isAgreement,
+  'police_verification': policeVerification,
+  'rental_agreement': rentalAgreement,
+},   'room_id': roomId,
         'rent': rent,
         'security_deposit': securityDeposit,
         'join_date': joinDate,
